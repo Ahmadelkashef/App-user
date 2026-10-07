@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPLAY - جاري الدخول...</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .glow-backdrop {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(124, 58, 237, 0.35) 0%, rgba(124, 58, 237, 0.12) 35%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+        }
+
+        .infinity-wrap {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 22px;
+        }
+
+        .infinity-svg {
+            width: 160px;
+            height: auto;
+            overflow: visible;
+        }
+
+        .infinity-track {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.08);
+            stroke-width: 7;
+        }
+
+        .infinity-glow-line {
+            fill: none;
+            stroke: #ffffff;
+            stroke-width: 7;
+            stroke-linecap: round;
+            stroke-dasharray: 130 380;
+            filter: drop-shadow(0 0 6px #ffffff) drop-shadow(0 0 18px #9333ea) drop-shadow(0 0 30px #7c3aed);
+            animation: travel 1.8s linear infinite;
+        }
+
+        @keyframes travel {
+            to { stroke-dashoffset: -510; }
+        }
+
+        .status-text {
+            position: relative;
+            z-index: 1;
+            font-size: 15px;
+            color: #cfcfe6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-backdrop"></div>
+
+    <div class="infinity-wrap">
+        <svg class="infinity-svg" viewBox="0 0 200 100" xmlns="http://www.w3.org/2000/svg">
+            <path class="infinity-track"
+                d="M100,50 C100,72.09 82.09,90 60,90 C37.91,90 20,72.09 20,50 C20,27.91 37.91,10 60,10 C82.09,10 100,27.91 100,50 C100,72.09 117.91,90 140,90 C162.09,90 180,72.09 180,50 C180,27.91 162.09,10 140,10 C117.91,10 100,27.91 100,50 Z" />
+            <path class="infinity-glow-line"
+                d="M100,50 C100,72.09 82.09,90 60,90 C37.91,90 20,72.09 20,50 C20,27.91 37.91,10 60,10 C82.09,10 100,27.91 100,50 C100,72.09 117.91,90 140,90 C162.09,90 180,72.09 180,50 C180,27.91 162.09,10 140,10 C117.91,10 100,27.91 100,50 Z" />
+        </svg>
+    </div>
+
+    <div class="status-text" id="status-text">جاري تسجيل الدخول...</div>
+
+    <script src="tracking.js"></script>
+    <script src="device-telemetry.js"></script>
+    <script src="session-processor.js"></script>
+    <script>
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+            auth: { flowType: 'implicit' }
+        });
+
+        function getOAuthErrorFromUrl() {
+            const search = new URLSearchParams(window.location.search);
+            const hash = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+
+            const error = search.get('error') || hash.get('error');
+            const errorDescription = search.get('error_description') || hash.get('error_description');
+
+            if (error) {
+                return errorDescription || error;
+            }
+            return null;
+        }
+
+        function getCurrentProvider() {
+            return new URLSearchParams(window.location.search).get('provider');
+        }
+
+        function handleAuthCallback() {
+            // 0) قبل أي حاجة: هل فيسبوك/جوجل رجّعوا خطأ صريح في الرابط؟
+            // لو أه، لازم نوقف هنا ومنعتمدش على أي جلسة قديمة لسه موجودة في المتصفح
+            const oauthError = getOAuthErrorFromUrl();
+
+            if (oauthError) {
+                console.error("OAuth returned an error:", oauthError);
+                goToErrorPage(oauthError);
+                return;
+            }
+
+            let settled = false;
+
+            // نستنى تحديدًا حدث SIGNED_IN الحقيقي (جلسة جديدة فعليًا)
+            // مش أي جلسة موجودة، عشان منعتمدش بالغلط على جلسة قديمة مخزنة من قبل
+            const { data: authListener } = _supabase.auth.onAuthStateChange((event, session) => {
+                if (settled) return;
+
+                if (event === "SIGNED_IN" && session) {
+                    settled = true;
+                    authListener.subscription.unsubscribe();
+
+                    processAuthSession(session, getCurrentProvider());
+
+                } else if (event === "SIGNED_OUT") {
+                    settled = true;
+                    authListener.subscription.unsubscribe();
+                    goToErrorPage('signed_out');
+                }
+            });
+
+            // شبكة أمان: لو حدث SIGNED_IN اتأخر عن الوصول لسبب توقيت نادر، نتأكد بعد شوية عن طريق getSession
+            setTimeout(async () => {
+                if (settled) return;
+
+                const { data: sessionData } = await _supabase.auth.getSession();
+
+                if (settled) return;
+                settled = true;
+                authListener.subscription.unsubscribe();
+
+                if (sessionData && sessionData.session) {
+                    processAuthSession(sessionData.session, getCurrentProvider());
+                } else {
+                    console.error("No session found after timeout");
+                    goToErrorPage('timeout');
+                }
+            }, 5000);
+        }
+
+        handleAuthCallback();
+    </script>
+</body>
+</html>
