@@ -1,0 +1,67 @@
+<nav class="bottom-nav" id="bottomNav">
+
+    <svg class="bottom-nav-bg" viewBox="0 0 520 75" preserveAspectRatio="none">
+        <path
+            id="bottomNavPath"
+            d="M0,0 L190,0 C204,0 210,8 216,18 C224,30 237,34 260,34 C283,34 296,30 304,18 C310,8 316,0 330,0 L520,0 L520,75 L0,75 Z"
+            fill="#0b071a">
+        </path>
+    </svg>
+
+    <button class="nav-item active" onclick="switchNavTab(this, 'home')">
+        <div class="nav-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+        </div>
+        <span>Home</span>
+    </button>
+
+    <button class="nav-item" onclick="switchNavTab(this, 'feed')">
+        <div class="nav-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 11a9 9 0 0 1 9 9"/>
+                <path d="M4 4a16 16 0 0 1 16 16"/>
+                <circle cx="5" cy="19" r="1"/>
+            </svg>
+        </div>
+        <span>Feed</span>
+    </button>
+
+    <button class="nav-item" onclick="switchNavTab(this, 'competitions')">
+        <div class="nav-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                <path d="M4 22h16"/>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+            </svg>
+        </div>
+        <span>Competitions</span>
+    </button>
+
+    <button class="nav-item" onclick="switchNavTab(this, 'market')">
+        <div class="nav-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                <line x1="3" y1="6" x2="21" y2="6"/>
+                <path d="M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+        </div>
+        <span>Market</span>
+    </button>
+
+    <button class="nav-item" onclick="switchNavTab(this, 'profile')">
+        <div class="nav-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="8" r="3.5"/>
+                <path d="M5 20c.7-3.5 3.1-5.5 7-5.5s6.3 2 7 5.5"/>
+            </svg>
+        </div>
+        <span>Profile</span>
+    </button>
+
+</nav>

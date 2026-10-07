@@ -1,0 +1,3788 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>iPLAY - Sports Profile</title>
+
+<script src="https://cdn.tailwindcss.com"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link rel="stylesheet" href="navigation.css"><style>
+    * {
+        box-sizing: border-box;
+    }
+
+    html {
+        background: #000;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        margin: 0;
+        background: #000;
+        color: #fff;
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
+    .glass {
+        background: rgba(255,255,255,0.045);
+        border: 1px solid rgba(255,255,255,0.07);
+        backdrop-filter: blur(14px);
+    }
+
+    .soft-card {
+        background: #111113;
+        border: 1px solid #202023;
+    }
+
+    .gradient-border {
+        position: relative;
+    }
+
+    .gradient-border::before {
+        content: "";
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(42,245,152,.7), rgba(32,227,178,.05), rgba(254,44,85,.45));
+        -webkit-mask:
+            linear-gradient(#fff 0 0) content-box,
+            linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+
+    .progress-track {
+        background: #242428;
+    }
+
+    .progress-fill {
+        background: linear-gradient(90deg, #2af598, #20e3b2);
+        box-shadow: 0 0 14px rgba(32,227,178,.3);
+    }
+
+    .level-glow {
+        box-shadow: 0 0 25px rgba(32,227,178,.08);
+    }
+
+    .badge-card {
+        transition: .2s ease;
+    }
+
+    .badge-card:hover {
+        transform: translateY(-3px);
+        background: #18181b;
+    }
+
+    .sport-pill {
+        background: #1c1c20;
+        border: 1px solid #29292e;
+    }
+
+    .active-main-tab {
+        color: #fff !important;
+        border-bottom: 2px solid #fff;
+    }
+
+    .inactive-main-tab {
+        color: #666;
+    }
+
+    .active-section-tab {
+        background: #fff;
+        color: #000;
+    }
+
+    .pitch {
+        width: 94%;
+        max-width: 440px;
+        min-height: 490px;
+        background: #00b341;
+        border-radius: 14px;
+        padding: 15px 10px;
+        margin: 16px auto;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 2px solid rgba(255,255,255,.4);
+        box-shadow: 0 14px 35px rgba(0,0,0,.55);
+        transform: scaleY(-1);
+    }
+
+    .pitch > * {
+        transform: scaleY(-1);
+    }
+
+    .goal-area {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%) scaleY(-1) !important;
+        width: 140px;
+        height: 45px;
+        border: 2px solid rgba(255,255,255,.35);
+        border-top: none;
+    }
+
+    .pitch-row {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+    }
+
+    .player-card {
+        width: 76px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .shirt-box {
+        width: 58px;
+        height: 58px;
+        padding: 4px;
+        border-radius: 8px;
+        background: rgba(0,0,0,.25);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(255,255,255,.25);
+    }
+
+    .shirt-box img {
+        width: 46px;
+        height: 46px;
+        object-fit: contain;
+    }
+
+    .player-pill {
+        width: 100%;
+        background: #fff;
+        color: #000;
+        text-align: center;
+        margin-top: 3px;
+        padding: 3px 0;
+        border-radius: 4px;
+    }
+
+    .media-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2px;
+    }
+
+    .media-item {
+        aspect-ratio: 3/4;
+        position: relative;
+        overflow: hidden;
+        background: #111;
+        cursor: pointer;
+    }
+
+    .media-item img,
+    .media-item video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .modal-backdrop {
+        background: rgba(0,0,0,.78);
+        backdrop-filter: blur(10px);
+    }
+
+    .fade-in {
+        animation: fadeIn .25s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .slide-up {
+        animation: slideUp .25s ease;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .tiny-label {
+        font-size: 9px;
+        color: #777;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+    }
+
+    .timeline-line {
+        position: absolute;
+        left: 12px;
+        top: 35px;
+        bottom: 35px;
+        width: 1px;
+        background: #303035;
+    }
+
+    .timeline-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #20e3b2;
+        box-shadow: 0 0 12px rgba(32,227,178,.35);
+    }
+
+    .viewer-ui {
+        transition: opacity .2s ease;
+    }
+
+    .viewer-ui-hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    /* =========================================================
+       STORY VIEWER
+    ========================================================== */
+
+    .story-progress-bar {
+        height: 2px;
+        background: rgba(255,255,255,.3);
+        overflow: hidden;
+        border-radius: 999px;
+    }
+
+    .story-progress-fill {
+        height: 100%;
+        width: 0%;
+        background: #fff;
+        border-radius: 999px;
+    }
+
+    .story-progress-fill.completed {
+        width: 100%;
+    }
+
+    .story-progress-fill.active {
+        animation: storyProgress linear forwards;
+    }
+
+    @keyframes storyProgress {
+        from {
+            width: 0%;
+        }
+        to {
+            width: 100%;
+        }
+    }
+
+    .story-tap-zone {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 45%;
+        z-index: 15;
+    }
+
+    .story-tap-left {
+        left: 0;
+    }
+
+    .story-tap-right {
+        right: 0;
+    }
+
+    .story-media {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+</style></head><body><div class="w-full max-w-md mx-auto min-h-screen bg-black relative pb-20">
+
+<div id="homeSection" class="hidden fade-in">
+
+    <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-md border-b border-neutral-900">
+
+        <div class="h-14 px-4 flex items-center justify-between relative">
+
+            <button id="homeProfileBtn"
+                    class="w-9 h-9 rounded-full p-[1px]"
+                    style="background:linear-gradient(135deg,#2af598,#20e3b2,#fe2c55);">
+
+                <div id="homeAvatar"
+                     class="w-full h-full rounded-full bg-neutral-900 overflow-hidden flex items-center justify-center">
+
+                    <i class="fa-solid fa-user text-xs text-neutral-500"></i>
+
+                </div>
+
+            </button>
+
+            <div class="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
+
+                <span class="text-lg font-black tracking-tight">
+                    iPLAY
+                </span>
+
+            </div>
+
+            <button id="homeNotificationBtn">
+                <i class="fa-regular fa-bell text-lg"></i>
+            </button>
+
+        </div>
+
+    </header>
+
+    <section class="px-4 pt-4">
+
+        <div class="flex justify-between items-center mb-3">
+
+            <div>
+                <div class="text-sm font-bold">
+                    Stories
+                </div>
+
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    Your sports moments
+                </div>
+            </div>
+
+            <button id="homeUploadStoryBtn"
+                    class="text-[10px] text-[#20e3b2]">
+                Add story
+            </button>
+
+        </div>
+
+        <div id="storiesContainer"
+             class="flex gap-3 overflow-x-auto pb-2">
+
+            <button id="ownStoryBtn"
+                    class="flex-shrink-0 w-[68px] text-center">
+
+                <div id="ownStoryRing"
+                     class="w-14 h-14 mx-auto rounded-full p-[2px]"
+                     style="background:linear-gradient(135deg,#2af598,#20e3b2,#fe2c55);">
+
+                    <div id="storyAvatar"
+                         class="w-full h-full rounded-full bg-neutral-900 border-2 border-black overflow-hidden flex items-center justify-center relative">
+
+                        <i class="fa-solid fa-user text-neutral-500 text-sm"></i>
+
+                        <div id="storyPlusBadge"
+                             class="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-[#20e3b2] border-2 border-black flex items-center justify-center">
+
+                            <i class="fa-solid fa-plus text-black text-[8px]"></i>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="text-[9px] text-neutral-300 mt-2 truncate">
+                    Your story
+                </div>
+
+            </button>
+
+            <div class="flex-shrink-0 w-[68px] text-center">
+
+                <div class="w-14 h-14 mx-auto rounded-full p-[2px]"
+                     style="background:linear-gradient(135deg,#fe2c55,#7c3aed);">
+
+                    <div class="w-full h-full rounded-full bg-neutral-900 border-2 border-black flex items-center justify-center">
+                        <i class="fa-solid fa-user text-neutral-500 text-sm"></i>
+                    </div>
+
+                </div>
+
+                <div class="text-[9px] text-neutral-400 mt-2 truncate">
+                    iPLAY
+                </div>
+
+            </div>
+
+            <div class="flex-shrink-0 w-[68px] text-center">
+
+                <div class="w-14 h-14 mx-auto rounded-full p-[2px]"
+                     style="background:linear-gradient(135deg,#f59e0b,#fe2c55);">
+
+                    <div class="w-full h-full rounded-full bg-neutral-900 border-2 border-black flex items-center justify-center">
+                        <i class="fa-solid fa-user text-neutral-500 text-sm"></i>
+                    </div>
+
+                </div>
+
+                <div class="text-[9px] text-neutral-400 mt-2 truncate">
+                    Football
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section id="homeFeedContainer"
+             class="mt-3">
+
+        <div id="homeEmptyState"
+             class="flex flex-col items-center justify-center py-20 px-5 text-center">
+
+            <div class="w-16 h-16 rounded-full bg-neutral-900 flex items-center justify-center text-neutral-500 text-2xl">
+                <i class="fa-solid fa-house"></i>
+            </div>
+
+            <div class="text-sm font-semibold mt-4">
+                Your Home feed is empty
+            </div>
+
+            <div class="text-[10px] text-neutral-600 mt-2 leading-relaxed">
+                Upload a photo or video from your profile<br>
+                and it will appear here.
+            </div>
+
+        </div>
+
+        <div id="homePostsContainer"></div>
+
+    </section>
+
+</div>
+
+<header id="profileHeader" class="sticky top-0 z-40 bg-black/90 backdrop-blur-md border-b border-neutral-900">
+    <div class="h-14 px-4 flex items-center justify-between relative">    <button id="backBtn" class="text-white text-lg">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+
+    <div class="absolute left-1/2 -translate-x-1/2 text-sm font-semibold tracking-wide">
+        @Mekki
+    </div>
+
+    <div class="flex items-center gap-5">
+        <button id="notificationBtn">
+            <i class="fa-regular fa-bell text-lg"></i>
+        </button>
+
+        <button id="moreBtn">
+            <i class="fa-solid fa-ellipsis-vertical text-lg"></i>
+        </button>
+    </div>
+</div>
+
+</header><section id="profileTopSection" class="px-4 pt-5"><div class="flex flex-col items-center">
+
+    <div id="avatarContainer"
+         class="relative w-24 h-24 cursor-pointer">
+
+        <div class="w-full h-full rounded-full p-[2px]"
+             style="background:linear-gradient(135deg,#2af598,#20e3b2,#fe2c55);">
+
+            <div id="avatarInner"
+                 class="w-full h-full rounded-full bg-neutral-900 border-2 border-black overflow-hidden flex items-center justify-center">
+
+                <i id="defaultAvatarIcon"
+                   class="fa-solid fa-user text-neutral-500 text-4xl"></i>
+
+            </div>
+        </div>
+
+        <div id="avatarEditBadge"
+             class="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-[#fe2c55] border-2 border-black flex items-center justify-center">
+            <i class="fa-solid fa-pen text-[10px]"></i>
+        </div>
+    </div>
+
+    <div class="flex items-center gap-1 mt-3">
+        <span class="font-bold text-lg">@Mekki</span>
+        <i class="fa-solid fa-circle-check text-cyan-400 text-xs"></i>
+    </div>
+
+    <div class="text-neutral-400 text-xs mt-1">
+        24 yrs · Al Ahly · Egypt
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-2 mt-3">
+
+        <span class="sport-pill rounded-full px-3 py-1 text-xs">
+            ⚽ Football
+        </span>
+
+        <span class="sport-pill rounded-full px-3 py-1 text-xs">
+            🎾 Padel
+        </span>
+
+        <span class="sport-pill rounded-full px-3 py-1 text-xs">
+            🏀 Basketball
+        </span>
+
+    </div>
+
+    <div class="w-full mt-5 p-4 rounded-2xl gradient-border level-glow">
+
+        <div class="relative z-10">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+                    <div class="tiny-label">
+                        iPLAY LEVEL
+                    </div>
+
+                    <div class="flex items-end gap-2 mt-1">
+                        <span class="text-3xl font-black">27</span>
+
+                        <span class="text-xs text-neutral-500 mb-1">
+                            ELITE
+                        </span>
+                    </div>
+                </div>
+
+                <div class="text-right">
+
+                    <div class="text-xs text-neutral-400">
+                        8,760 XP
+                    </div>
+
+                    <div class="text-[10px] text-neutral-600 mt-1">
+                        1,240 XP to Level 28
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="progress-track w-full h-2 rounded-full mt-3 overflow-hidden">
+                <div class="progress-fill h-full rounded-full"
+                     style="width:88%;"></div>
+            </div>
+
+            <div class="flex justify-between mt-2 text-[10px] text-neutral-500">
+                <span>Level 27</span>
+                <span>88%</span>
+                <span>Level 28</span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="grid grid-cols-3 w-full mt-5">
+
+        <div class="text-center">
+            <div class="font-bold text-sm">211</div>
+            <div class="text-neutral-500 text-[10px] mt-1">Following</div>
+        </div>
+
+        <div class="text-center border-x border-neutral-900">
+            <div class="font-bold text-sm">875.7K</div>
+            <div class="text-neutral-500 text-[10px] mt-1">Followers</div>
+        </div>
+
+        <div class="text-center">
+            <div class="font-bold text-sm">28.5M</div>
+            <div class="text-neutral-500 text-[10px] mt-1">Likes</div>
+        </div>
+
+    </div>
+
+    <div class="flex gap-2 w-full mt-5">
+
+        <button id="editProfileBtn"
+                class="flex-1 py-2.5 rounded-lg bg-neutral-800 text-xs font-semibold hover:bg-neutral-700">
+            Edit profile
+        </button>
+
+        <button id="visitorBtn"
+                class="flex-1 py-2.5 rounded-lg bg-neutral-800 text-xs font-semibold hover:bg-neutral-700">
+            View as visitor
+        </button>
+
+        <button id="followBtn"
+                class="flex-1 py-2.5 rounded-lg bg-[#20e3b2] text-black text-xs font-semibold hidden">
+            Follow
+        </button>
+
+        <button id="shareProfileBtn"
+                class="w-11 rounded-lg bg-neutral-800 flex items-center justify-center">
+            <i class="fa-solid fa-share text-xs"></i>
+        </button>
+
+    </div>
+
+    <div class="text-center mt-4 text-xs text-neutral-300 leading-relaxed">
+        Football player · Padel enthusiast<br>
+        Chasing better every day.
+    </div>
+
+</div>
+
+</section><section id="profileMainSection" class="mt-8"><div class="flex border-b border-neutral-900 sticky top-14 bg-black/95 backdrop-blur-md z-30">
+
+    <button id="mainTabOverview"
+            class="main-tab active-main-tab flex-1 py-3 text-sm">
+        Overview
+    </button>
+
+    <button id="mainTabContent"
+            class="main-tab inactive-main-tab flex-1 py-3 text-sm">
+        Content
+    </button>
+
+    <button id="mainTabCompetitions"
+            class="main-tab inactive-main-tab flex-1 py-3 text-sm">
+        Compete
+    </button>
+
+    <button id="mainTabFantasy"
+            class="main-tab inactive-main-tab flex-1 py-3 text-sm">
+        Fantasy
+    </button>
+
+</div>
+
+<div id="overviewSection" class="fade-in">
+
+    <section class="px-4 mt-7">
+
+        <div class="flex items-center justify-between mb-3">
+
+            <div>
+                <div class="text-sm font-bold">Sports Identity</div>
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    Your athletic profile
+                </div>
+            </div>
+
+            <button class="text-[10px] text-[#20e3b2]">
+                View all
+            </button>
+
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+
+            <div class="soft-card rounded-xl p-3">
+
+                <div class="text-[10px] text-neutral-500">
+                    PRIMARY SPORT
+                </div>
+
+                <div class="flex items-center gap-2 mt-2">
+                    <span class="text-xl">⚽</span>
+
+                    <div>
+                        <div class="text-sm font-bold">Football</div>
+                        <div class="text-[10px] text-neutral-500">
+                            Right Wing
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="soft-card rounded-xl p-3">
+
+                <div class="text-[10px] text-neutral-500">
+                    CURRENT CLUB
+                </div>
+
+                <div class="flex items-center gap-2 mt-2">
+
+                    <div class="w-8 h-8 rounded-full bg-neutral-900 flex items-center justify-center">
+                        <i class="fa-solid fa-futbol text-xs"></i>
+                    </div>
+
+                    <div>
+                        <div class="text-sm font-bold">Al Ahly</div>
+                        <div class="text-[10px] text-neutral-500">
+                            2026 — Present
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="px-4 mt-7">
+
+        <div class="flex justify-between items-center mb-3">
+
+            <div>
+                <div class="text-sm font-bold">Achievements</div>
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    18 unlocked · 7 to discover
+                </div>
+            </div>
+
+            <button id="allBadgesBtn"
+                    class="text-[10px] text-[#20e3b2]">
+                See all
+            </button>
+
+        </div>
+
+        <div class="grid grid-cols-4 gap-2">
+
+            <button class="badge-card soft-card rounded-xl p-3 text-center">
+                <div class="w-11 h-11 mx-auto rounded-full bg-yellow-500/10 flex items-center justify-center text-yellow-400 text-xl">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <div class="text-[9px] font-semibold mt-2">
+                    Champion
+                </div>
+            </button>
+
+            <button class="badge-card soft-card rounded-xl p-3 text-center">
+                <div class="w-11 h-11 mx-auto rounded-full bg-red-500/10 flex items-center justify-center text-red-400 text-xl">
+                    <i class="fa-solid fa-fire"></i>
+                </div>
+                <div class="text-[9px] font-semibold mt-2">
+                    Hot Streak
+                </div>
+            </button>
+
+            <button class="badge-card soft-card rounded-xl p-3 text-center">
+                <div class="w-11 h-11 mx-auto rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 text-xl">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <div class="text-[9px] font-semibold mt-2">
+                    Speed Demon
+                </div>
+            </button>
+
+            <button class="badge-card soft-card rounded-xl p-3 text-center">
+                <div class="w-11 h-11 mx-auto rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400 text-xl">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <div class="text-[9px] font-semibold mt-2">
+                    Elite
+                </div>
+            </button>
+
+        </div>
+
+    </section>
+
+    <section class="px-4 mt-7">
+
+        <div class="flex justify-between items-center mb-3">
+
+            <div>
+                <div class="text-sm font-bold">Career Journey</div>
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    Your sports history
+                </div>
+            </div>
+
+            <button id="careerDetailsBtn"
+                    class="text-[10px] text-[#20e3b2]">
+                Details
+            </button>
+
+        </div>
+
+        <div class="soft-card rounded-2xl p-4 relative overflow-hidden">
+
+            <div class="timeline-line"></div>
+
+            <div class="relative flex gap-4">
+
+                <div class="relative z-10 mt-1">
+                    <div class="timeline-dot"></div>
+                </div>
+
+                <div class="flex-1">
+
+                    <div class="flex justify-between">
+                        <div class="font-bold text-sm">
+                            Al Ahly
+                        </div>
+
+                        <span class="text-[10px] text-[#20e3b2]">
+                            CURRENT
+                        </span>
+                    </div>
+
+                    <div class="text-[10px] text-neutral-500 mt-1">
+                        Football · Right Wing
+                    </div>
+
+                    <div class="text-[10px] text-neutral-600 mt-2">
+                        2026 — Present
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="relative flex gap-4 mt-6">
+
+                <div class="relative z-10 mt-1">
+                    <div class="w-2 h-2 rounded-full bg-neutral-600"></div>
+                </div>
+
+                <div class="flex-1">
+
+                    <div class="font-bold text-sm">
+                        Cairo Sports Club
+                    </div>
+
+                    <div class="text-[10px] text-neutral-500 mt-1">
+                        Football
+                    </div>
+
+                    <div class="text-[10px] text-neutral-600 mt-2">
+                        2024 — 2026
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="px-4 mt-7">
+
+        <div class="text-sm font-bold mb-3">
+            Performance
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+
+            <div class="soft-card rounded-xl p-3">
+                <div class="text-xl font-black">38</div>
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    Matches
+                </div>
+            </div>
+
+            <div class="soft-card rounded-xl p-3">
+                <div class="text-xl font-black">21</div>
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    Goals
+                </div>
+            </div>
+
+            <div class="soft-card rounded-xl p-3">
+                <div class="text-xl font-black">14</div>
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    Assists
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="px-4">
+
+        <div class="mt-5">
+
+            <div class="flex justify-between items-center mb-3">
+
+                <div>
+                    <div class="text-sm font-bold">
+                        Featured
+                    </div>
+
+                    <div class="text-[10px] text-neutral-500 mt-1">
+                        What defines your sports identity
+                    </div>
+                </div>
+
+                <span class="text-[9px] px-2 py-1 rounded-full bg-[#20e3b2]/10 text-[#20e3b2]">
+                    iPLAY PICK
+                </span>
+
+            </div>
+
+            <div class="rounded-2xl overflow-hidden relative h-48 bg-neutral-900">
+
+                <img
+                    src="https://images.unsplash.com/photo-1553778263-73a05d6f8b8d?auto=format&fit=crop&w=900&q=80"
+                    class="w-full h-full object-cover opacity-70"
+                    alt="Football">
+
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+
+                <div class="absolute bottom-4 left-4 right-4">
+
+                    <div class="text-[10px] text-[#20e3b2] font-semibold">
+                        FEATURED PLAYER
+                    </div>
+
+                    <div class="text-xl font-black mt-1">
+                        Mekki's Football Journey
+                    </div>
+
+                    <div class="text-xs text-neutral-300 mt-1">
+                        From local competitions to elite level.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="mt-6">
+
+            <div class="text-sm font-bold mb-3">
+                Current Goals
+            </div>
+
+            <div class="space-y-2">
+
+                <div class="soft-card rounded-xl p-3">
+
+                    <div class="flex justify-between items-center">
+
+                        <div class="flex items-center gap-3">
+
+                            <div class="w-9 h-9 rounded-full bg-yellow-500/10 flex items-center justify-center text-yellow-400">
+                                <i class="fa-solid fa-trophy text-sm"></i>
+                            </div>
+
+                            <div>
+                                <div class="text-xs font-semibold">
+                                    Win a Football Competition
+                                </div>
+                                <div class="text-[10px] text-neutral-500 mt-1">
+                                    2 of 3 stages completed
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <span class="text-xs font-bold">
+                            66%
+                        </span>
+
+                    </div>
+
+                    <div class="progress-track h-1.5 rounded-full mt-3">
+                        <div class="progress-fill h-full rounded-full" style="width:66%;"></div>
+                    </div>
+
+                </div>
+
+                <div class="soft-card rounded-xl p-3">
+
+                    <div class="flex justify-between items-center">
+
+                        <div class="flex items-center gap-3">
+
+                            <div class="w-9 h-9 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400">
+                                <i class="fa-solid fa-arrow-up text-sm"></i>
+                            </div>
+
+                            <div>
+                                <div class="text-xs font-semibold">
+                                    Reach Level 30
+                                </div>
+                                <div class="text-[10px] text-neutral-500 mt-1">
+                                    8,760 / 10,000 XP
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <span class="text-xs font-bold">
+                            88%
+                        </span>
+
+                    </div>
+
+                    <div class="progress-track h-1.5 rounded-full mt-3">
+                        <div class="progress-fill h-full rounded-full" style="width:88%;"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="mt-6">
+
+            <div class="text-sm font-bold mb-3">
+                Community
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+
+                <div class="soft-card rounded-xl p-4">
+
+                    <div class="text-[10px] text-neutral-500">
+                        CONTENT REACH
+                    </div>
+
+                    <div class="text-xl font-black mt-2">
+                        2.8M
+                    </div>
+
+                    <div class="text-[10px] text-[#20e3b2] mt-1">
+                        +18.4% this month
+                    </div>
+
+                </div>
+
+                <div class="soft-card rounded-xl p-4">
+
+                    <div class="text-[10px] text-neutral-500">
+                        PROFILE VISITS
+                    </div>
+
+                    <div class="text-xl font-black mt-2">
+                        164K
+                    </div>
+
+                    <div class="text-[10px] text-[#20e3b2] mt-1">
+                        +9.2% this month
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="contentSection" class="hidden fade-in">
+
+    <div class="px-4">
+
+        <div class="flex justify-between items-center mt-5 mb-4">
+
+            <div>
+                <div class="text-sm font-bold">
+                    Content
+                </div>
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    Photos, videos & highlights
+                </div>
+            </div>
+
+            <button id="uploadTriggerBtn"
+                    class="bg-[#fe2c55] px-4 py-2 rounded-full text-xs font-semibold">
+                <i class="fa-solid fa-plus mr-1"></i>
+                Upload
+            </button>
+
+        </div>
+
+    </div>
+
+    <input
+        type="file"
+        id="gridUploadInput"
+        accept="image/png,image/jpeg,image/webp,video/mp4,video/quicktime,video/webm"
+        class="hidden">
+
+    <div id="emptyUploadState"
+         class="flex flex-col items-center justify-center py-16 px-4 text-center">
+
+        <div class="w-16 h-16 rounded-full bg-neutral-900 flex items-center justify-center text-neutral-500 text-2xl">
+            <i class="fa-regular fa-images"></i>
+        </div>
+
+        <p id="emptyUploadTitle" class="text-neutral-300 text-sm mt-4">
+            Share your sports journey
+        </p>
+
+        <p id="emptyUploadText" class="text-neutral-600 text-xs mt-1">
+            Upload photos, skills and highlights.
+        </p>
+
+    </div>
+
+    <div id="mediaGridContainer"
+         class="media-grid hidden">
+    </div>
+
+</div>
+
+<div id="competitionsSection" class="hidden fade-in">
+
+    <div class="px-4">
+
+        <div class="mt-5 flex justify-between items-center">
+
+            <div>
+                <div class="text-sm font-bold">
+                    Competitions
+                </div>
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    Your competitive journey
+                </div>
+            </div>
+
+            <span class="text-[10px] text-neutral-500">
+                14 events
+            </span>
+
+        </div>
+
+        <div class="mt-5">
+
+            <div class="text-xs font-semibold text-neutral-400 mb-2">
+                UPCOMING
+            </div>
+
+            <div class="soft-card rounded-2xl p-4">
+
+                <div class="flex justify-between">
+
+                    <div class="flex gap-3">
+
+                        <div class="w-11 h-11 rounded-xl bg-green-500/10 flex items-center justify-center text-xl">
+                            ⚽
+                        </div>
+
+                        <div>
+                            <div class="text-sm font-bold">
+                                iPLAY Friday Football
+                            </div>
+
+                            <div class="text-[10px] text-neutral-500 mt-1">
+                                5-a-side · Cairo
+                            </div>
+
+                            <div class="text-[10px] text-neutral-600 mt-1">
+                                Friday · 8:30 PM
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="text-right">
+                        <div class="text-[10px] text-[#20e3b2]">
+                            REGISTERED
+                        </div>
+
+                        <div class="text-[10px] text-neutral-600 mt-2">
+                            8/16 teams
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="mt-6">
+
+            <div class="text-xs font-semibold text-neutral-400 mb-2">
+                RECENT RESULTS
+            </div>
+
+            <div class="space-y-2">
+
+                <div class="soft-card rounded-xl p-3">
+
+                    <div class="flex items-center justify-between">
+
+                        <div class="flex items-center gap-3">
+
+                            <span class="text-xl">🏆</span>
+
+                            <div>
+                                <div class="text-xs font-semibold">
+                                    Cairo Weekend Cup
+                                </div>
+
+                                <div class="text-[10px] text-neutral-500 mt-1">
+                                    Football
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="text-right">
+                            <div class="text-yellow-400 text-xs font-bold">
+                                1st
+                            </div>
+                            <div class="text-[10px] text-neutral-600">
+                                +500 XP
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="soft-card rounded-xl p-3">
+
+                    <div class="flex items-center justify-between">
+
+                        <div class="flex items-center gap-3">
+
+                            <span class="text-xl">🎾</span>
+
+                            <div>
+                                <div class="text-xs font-semibold">
+                                    Padel Challenger
+                                </div>
+
+                                <div class="text-[10px] text-neutral-500 mt-1">
+                                    Padel
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="text-right">
+                            <div class="text-neutral-300 text-xs font-bold">
+                                Semi-final
+                            </div>
+                            <div class="text-[10px] text-neutral-600">
+                                +220 XP
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 mt-6">
+
+            <div class="soft-card rounded-xl p-3 text-center">
+                <div class="text-lg font-black">14</div>
+                <div class="text-[9px] text-neutral-500 mt-1">EVENTS</div>
+            </div>
+
+            <div class="soft-card rounded-xl p-3 text-center">
+                <div class="text-lg font-black">5</div>
+                <div class="text-[9px] text-neutral-500 mt-1">WINS</div>
+            </div>
+
+            <div class="soft-card rounded-xl p-3 text-center">
+                <div class="text-lg font-black">9</div>
+                <div class="text-[9px] text-neutral-500 mt-1">PODIUMS</div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div id="fantasySection" class="hidden fade-in">
+
+    <div class="px-4">
+
+        <div class="mt-5 flex justify-between items-center">
+
+            <div>
+                <div class="text-sm font-bold">
+                    Fantasy
+                </div>
+
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    Your fantasy journey
+                </div>
+            </div>
+
+            <span class="text-[10px] px-2 py-1 rounded-full bg-purple-500/10 text-purple-300">
+                ACTIVE
+            </span>
+
+        </div>
+
+        <div class="mt-5 rounded-2xl p-5 relative overflow-hidden"
+             style="background:linear-gradient(135deg,#171326,#101014);border:1px solid #2b2540;">
+
+            <div class="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-purple-500/10 blur-2xl"></div>
+
+            <div class="relative">
+
+                <div class="text-[10px] text-neutral-500">
+                    CURRENT RANK
+                </div>
+
+                <div class="flex items-end gap-2 mt-1">
+                    <div class="text-4xl font-black">
+                        #428
+                    </div>
+
+                    <div class="text-xs text-[#20e3b2] mb-2">
+                        ↑ 73
+                    </div>
+                </div>
+
+                <div class="text-[10px] text-neutral-500 mt-2">
+                    Among 84,210 coaches this round
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 mt-3">
+
+            <div class="soft-card rounded-xl p-3">
+                <div class="text-lg font-black">21</div>
+                <div class="text-[9px] text-neutral-500 mt-1">
+                    ROUNDS
+                </div>
+            </div>
+
+            <div class="soft-card rounded-xl p-3">
+                <div class="text-lg font-black">17</div>
+                <div class="text-[9px] text-neutral-500 mt-1">
+                    TOP 1K
+                </div>
+            </div>
+
+            <div class="soft-card rounded-xl p-3">
+                <div class="text-lg font-black">3</div>
+                <div class="text-[9px] text-neutral-500 mt-1">
+                    WINS
+                </div>
+            </div>
+
+        </div>
+
+        <div class="mt-6">
+
+            <div class="flex justify-between items-center mb-2">
+
+                <div>
+                    <div class="text-xs font-semibold">
+                        Latest Team
+                    </div>
+                    <div class="text-[10px] text-neutral-600 mt-1">
+                        Gameweek 1 · 4-4-2
+                    </div>
+                </div>
+
+                <button id="refreshTeamBtn"
+                        class="text-[10px] text-[#20e3b2]">
+                    Refresh
+                </button>
+
+            </div>
+
+            <div id="teamTabContent"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+<div id="sharedNavigation"></div>
+
+<input type="file"
+id="imageUploadInput"
+accept="image/*"
+class="hidden">
+
+<div id="avatarModal"
+     class="fixed inset-0 bg-black/70 z-[100] hidden items-end justify-center"><div class="w-full max-w-md bg-[#1b1b1d] rounded-t-3xl p-5 slide-up">
+
+    <div class="w-10 h-1 bg-neutral-600 rounded-full mx-auto mb-5"></div>
+
+    <div class="text-center font-bold mb-4">
+        Profile photo
+    </div>
+
+    <div class="space-y-2">
+
+        <button id="changeAvatarBtn"
+                class="w-full py-3 rounded-xl bg-neutral-800 text-sm">
+            Change photo
+        </button>
+
+        <button id="viewAvatarBtn"
+                class="w-full py-3 rounded-xl bg-neutral-800 text-sm">
+            View photo
+        </button>
+
+        <button id="closeAvatarModal"
+                class="w-full py-3 rounded-xl bg-neutral-900 text-neutral-400 text-sm">
+            Cancel
+        </button>
+
+    </div>
+
+</div>
+
+</div>
+
+<!-- =========================================================
+     STORY CREATOR
+========================================================== -->
+
+<input
+    type="file"
+    id="storyUploadInput"
+    accept="image/png,image/jpeg,image/webp,video/mp4,video/quicktime,video/webm"
+    class="hidden">
+
+<div id="storyCreatorModal"
+     class="fixed inset-0 bg-black/80 z-[170] hidden items-end justify-center">
+
+    <div class="w-full max-w-md bg-[#18181a] rounded-t-3xl p-5 slide-up">
+
+        <div class="w-10 h-1 bg-neutral-600 rounded-full mx-auto mb-5"></div>
+
+        <div class="flex justify-between items-center mb-5">
+
+            <div>
+                <div class="font-bold">
+                    Create story
+                </div>
+
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    Share a photo or video with your story
+                </div>
+            </div>
+
+            <button id="closeStoryCreator">
+                <i class="fa-solid fa-xmark text-neutral-400"></i>
+            </button>
+
+        </div>
+
+        <div id="storyCreatorEmpty"
+             class="flex flex-col items-center justify-center py-10">
+
+            <div class="w-16 h-16 rounded-full bg-neutral-900 flex items-center justify-center text-neutral-500 text-2xl">
+                <i class="fa-regular fa-image"></i>
+            </div>
+
+            <div class="text-sm font-semibold mt-4">
+                Add to your story
+            </div>
+
+            <div class="text-[10px] text-neutral-600 mt-2 text-center">
+                Choose a photo or video from your device.
+            </div>
+
+            <button id="chooseStoryMediaBtn"
+                    class="mt-5 px-5 py-2.5 rounded-xl bg-[#20e3b2] text-black text-xs font-bold">
+                Choose photo or video
+            </button>
+
+        </div>
+
+        <div id="storyCreatorPreview"
+             class="hidden">
+
+            <div class="w-full h-[55vh] max-h-[520px] rounded-2xl overflow-hidden bg-black flex items-center justify-center relative">
+
+                <div id="storyPreviewContainer"
+                     class="w-full h-full flex items-center justify-center">
+                </div>
+
+                <div class="absolute top-3 left-3 right-3 flex items-center gap-3">
+
+                    <div class="w-8 h-8 rounded-full p-[1px]"
+                         style="background:linear-gradient(135deg,#2af598,#fe2c55);">
+
+                        <div id="storyPreviewAvatar"
+                             class="w-full h-full rounded-full bg-neutral-900 overflow-hidden flex items-center justify-center">
+                            <i class="fa-solid fa-user text-xs text-neutral-500"></i>
+                        </div>
+
+                    </div>
+
+                    <span class="text-xs font-semibold">
+                        @Mekki
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="flex gap-2 mt-4">
+
+                <button id="changeStoryMediaBtn"
+                        class="flex-1 py-3 rounded-xl bg-neutral-800 text-neutral-300 text-xs font-semibold">
+                    Change
+                </button>
+
+                <button id="shareStoryBtn"
+                        class="flex-1 py-3 rounded-xl bg-[#20e3b2] text-black text-xs font-bold">
+                    Share to Story
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     STORY VIEWER
+========================================================== -->
+
+<div id="storyViewer"
+     class="fixed inset-0 bg-black z-[180] hidden">
+
+    <div class="absolute inset-0 flex items-center justify-center overflow-hidden">
+
+        <div id="storyViewerMedia"
+             class="w-full h-full flex items-center justify-center">
+        </div>
+
+    </div>
+
+    <div class="absolute top-3 left-3 right-3 z-30">
+
+        <div id="storyProgressContainer"
+             class="flex gap-1">
+        </div>
+
+        <div class="flex items-center justify-between mt-4">
+
+            <div class="flex items-center gap-2">
+
+                <div class="w-9 h-9 rounded-full p-[1px]"
+                     style="background:linear-gradient(135deg,#2af598,#fe2c55);">
+
+                    <div id="storyViewerAvatar"
+                         class="w-full h-full rounded-full bg-neutral-900 overflow-hidden flex items-center justify-center">
+                        <i class="fa-solid fa-user text-xs text-neutral-500"></i>
+                    </div>
+
+                </div>
+
+                <div>
+                    <div class="text-xs font-bold">
+                        Mekki
+                    </div>
+
+                    <div class="text-[9px] text-neutral-400">
+                        @Mekki
+                    </div>
+                </div>
+
+            </div>
+
+            <button id="closeStoryViewer"
+                    class="w-9 h-9 rounded-full bg-black/50 backdrop-blur-md flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+    <div id="storyTapLeft"
+         class="story-tap-zone story-tap-left">
+    </div>
+
+    <div id="storyTapRight"
+         class="story-tap-zone story-tap-right">
+    </div>
+
+</div>
+
+<div id="mediaViewer"
+     class="fixed inset-0 bg-black z-[120] hidden"><button id="closeMediaViewer"
+        class="viewer-ui absolute top-5 left-5 z-20 w-10 h-10 rounded-full bg-black/50 flex items-center justify-center">
+    <i class="fa-solid fa-arrow-left"></i>
+</button>
+
+<div id="fullScreenContainer"
+     class="absolute inset-0 flex items-center justify-center">
+</div>
+
+<div id="viewerActions"
+     class="viewer-ui absolute right-4 bottom-24 z-20 flex flex-col gap-4 items-center rounded-[2rem] bg-black/55 backdrop-blur-md border border-white/10 px-2.5 py-3">
+
+    <button id="viewerLikeBtn"
+            class="text-center">
+        <div class="w-11 h-11 rounded-full flex items-center justify-center">
+            <i id="viewerLikeIcon" class="fa-solid fa-heart text-[#fe2c55]"></i>
+        </div>
+        <span id="viewerLikes"
+              class="text-[10px] font-semibold">
+            358
+        </span>
+    </button>
+
+    <button class="text-center">
+        <div class="w-11 h-11 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-share"></i>
+        </div>
+        <span class="text-[10px]">
+            142
+        </span>
+    </button>
+
+    <button class="text-center">
+        <div class="w-11 h-11 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-repeat"></i>
+        </div>
+        <span class="text-[10px]">
+            31
+        </span>
+    </button>
+
+    <button id="viewerDeleteBtn"
+            class="text-center">
+        <div class="w-11 h-11 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-trash"></i>
+        </div>
+        <span class="text-[10px]">
+            Delete
+        </span>
+    </button>
+
+    <button id="viewerEditBtn"
+            class="text-center">
+        <div class="w-11 h-11 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-pen"></i>
+        </div>
+        <span class="text-[10px]">
+            Edit
+        </span>
+    </button>
+
+</div>
+
+<div id="viewerProfile"
+     class="viewer-ui absolute bottom-7 left-5 flex items-center gap-2 rounded-full bg-black/55 backdrop-blur-md border border-white/10 px-2.5 py-1.5">
+
+    <div class="w-9 h-9 rounded-full p-[1px]"
+         style="background:linear-gradient(135deg,#2af598,#fe2c55);">
+
+        <div id="viewerAvatar"
+             class="w-full h-full rounded-full bg-neutral-900 overflow-hidden flex items-center justify-center">
+            <i class="fa-solid fa-user text-xs text-neutral-500"></i>
+        </div>
+
+    </div>
+
+    <span class="text-xs font-semibold px-1">
+        @Mekki
+    </span>
+
+</div>
+
+</div><div id="deleteConfirmModal"
+     class="fixed inset-0 bg-black/75 z-[160] hidden items-center justify-center p-5"><div class="w-full max-w-xs bg-[#1b1b1d] rounded-2xl p-5 text-center border border-neutral-800 slide-up">
+
+    <div class="w-12 h-12 rounded-full bg-[#fe2c55]/10 text-[#fe2c55] flex items-center justify-center mx-auto">
+        <i class="fa-solid fa-trash"></i>
+    </div>
+
+    <div class="font-bold mt-3">
+        Delete this item?
+    </div>
+
+    <div class="text-xs text-neutral-400 mt-2 leading-relaxed">
+        Are you sure you want to delete this item? This action cannot be undone.
+    </div>
+
+    <div class="flex gap-2 mt-5">
+
+        <button id="cancelDeleteBtn"
+                class="flex-1 py-2.5 rounded-xl bg-neutral-800 text-neutral-300 text-xs font-semibold">
+            Cancel
+        </button>
+
+        <button id="confirmDeleteBtn"
+                class="flex-1 py-2.5 rounded-xl bg-[#fe2c55] text-white text-xs font-bold">
+            Confirm Delete
+        </button>
+
+    </div>
+
+</div>
+
+</div><input
+type="file"
+id="editMediaInput"
+accept="image/png,image/jpeg,image/webp,video/mp4,video/quicktime,video/webm"
+class="hidden">
+
+<div id="editModal"
+     class="fixed inset-0 bg-black/70 z-[110] hidden items-end justify-center"><div class="w-full max-w-md bg-[#18181a] rounded-t-3xl p-5 slide-up">
+
+    <div class="w-10 h-1 bg-neutral-600 rounded-full mx-auto mb-5"></div>
+
+    <div class="flex justify-between items-center mb-5">
+
+        <div class="font-bold">
+            Edit profile
+        </div>
+
+        <button id="closeEditModal">
+            <i class="fa-solid fa-xmark text-neutral-400"></i>
+        </button>
+
+    </div>
+
+    <div class="space-y-4">
+
+        <div>
+            <label class="text-[10px] text-neutral-500">
+                DISPLAY NAME
+            </label>
+
+            <input
+                value="Mekki"
+                class="w-full mt-2 bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-3 text-sm outline-none">
+        </div>
+
+        <div>
+            <label class="text-[10px] text-neutral-500">
+                BIO
+            </label>
+
+            <textarea
+                class="w-full mt-2 bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-3 text-sm outline-none resize-none"
+                rows="3">Football player · Padel enthusiast
+
+Chasing better every day.</textarea>
+</div>
+
+        <div>
+            <label class="text-[10px] text-neutral-500">
+                PRIMARY SPORT
+            </label>
+
+            <select
+                class="w-full mt-2 bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-3 text-sm outline-none">
+
+                <option>Football</option>
+                <option>Padel</option>
+                <option>Basketball</option>
+                <option>Tennis</option>
+                <option>Volleyball</option>
+                <option>Table Tennis</option>
+
+            </select>
+        </div>
+
+        <button id="saveProfileBtn"
+                class="w-full py-3 rounded-xl bg-[#20e3b2] text-black font-bold text-sm">
+            Save changes
+        </button>
+
+    </div>
+
+</div>
+
+</div><div id="badgesModal"
+     class="fixed inset-0 bg-black/75 z-[110] hidden items-end justify-center"><div class="w-full max-w-md max-h-[80vh] overflow-y-auto bg-[#151517] rounded-t-3xl p-5 slide-up">
+
+    <div class="w-10 h-1 bg-neutral-600 rounded-full mx-auto mb-5"></div>
+
+    <div class="flex justify-between items-center">
+
+        <div>
+            <div class="font-bold">
+                Achievements
+            </div>
+
+            <div class="text-[10px] text-neutral-500 mt-1">
+                18 unlocked · 7 locked
+            </div>
+        </div>
+
+        <button id="closeBadgesModal">
+            <i class="fa-solid fa-xmark text-neutral-400"></i>
+        </button>
+
+    </div>
+
+    <div class="grid grid-cols-3 gap-2 mt-5">
+
+        <div class="badge-card soft-card rounded-xl p-4 text-center">
+            <div class="text-2xl text-yellow-400">
+                🏆
+            </div>
+            <div class="text-[10px] font-bold mt-2">
+                Champion
+            </div>
+            <div class="text-[8px] text-neutral-600 mt-1">
+                Unlocked
+            </div>
+        </div>
+
+        <div class="badge-card soft-card rounded-xl p-4 text-center">
+            <div class="text-2xl text-red-400">
+                🔥
+            </div>
+            <div class="text-[10px] font-bold mt-2">
+                Hot Streak
+            </div>
+            <div class="text-[8px] text-neutral-600 mt-1">
+                Unlocked
+            </div>
+        </div>
+
+        <div class="badge-card soft-card rounded-xl p-4 text-center">
+            <div class="text-2xl text-cyan-400">
+                ⚡
+            </div>
+            <div class="text-[10px] font-bold mt-2">
+                Speed Demon
+            </div>
+            <div class="text-[8px] text-neutral-600 mt-1">
+                Unlocked
+            </div>
+        </div>
+
+        <div class="badge-card soft-card rounded-xl p-4 text-center">
+            <div class="text-2xl text-purple-400">
+                ⭐
+            </div>
+            <div class="text-[10px] font-bold mt-2">
+                Elite
+            </div>
+            <div class="text-[8px] text-neutral-600 mt-1">
+                Unlocked
+            </div>
+        </div>
+
+        <div class="badge-card soft-card rounded-xl p-4 text-center opacity-40">
+            <div class="text-2xl">
+                🔒
+            </div>
+            <div class="text-[10px] font-bold mt-2">
+                MVP
+            </div>
+            <div class="text-[8px] text-neutral-600 mt-1">
+                Locked
+            </div>
+        </div>
+
+        <div class="badge-card soft-card rounded-xl p-4 text-center opacity-40">
+            <div class="text-2xl">
+                🔒
+            </div>
+            <div class="text-[10px] font-bold mt-2">
+                Legend
+            </div>
+            <div class="text-[8px] text-neutral-600 mt-1">
+                Locked
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</div><div id="careerModal"
+     class="fixed inset-0 bg-black/75 z-[110] hidden items-end justify-center"><div class="w-full max-w-md max-h-[80vh] overflow-y-auto bg-[#151517] rounded-t-3xl p-5 slide-up">
+
+    <div class="w-10 h-1 bg-neutral-600 rounded-full mx-auto mb-5"></div>
+
+    <div class="flex justify-between items-center">
+
+        <div class="font-bold">
+            Career Journey
+        </div>
+
+        <button id="closeCareerModal">
+            <i class="fa-solid fa-xmark text-neutral-400"></i>
+        </button>
+
+    </div>
+
+    <div class="mt-6 relative">
+
+        <div class="absolute left-[14px] top-3 bottom-3 w-px bg-neutral-800"></div>
+
+        <div class="relative flex gap-4 mb-7">
+
+            <div class="relative z-10 w-7 flex justify-center">
+                <div class="w-3 h-3 rounded-full bg-[#20e3b2] mt-1"></div>
+            </div>
+
+            <div>
+                <div class="text-sm font-bold">
+                    Al Ahly
+                </div>
+
+                <div class="text-[10px] text-[#20e3b2] mt-1">
+                    Current club
+                </div>
+
+                <div class="text-[10px] text-neutral-500 mt-2">
+                    Football · Right Wing
+                </div>
+
+                <div class="text-[10px] text-neutral-600 mt-1">
+                    2026 — Present
+                </div>
+            </div>
+
+        </div>
+
+        <div class="relative flex gap-4 mb-7">
+
+            <div class="relative z-10 w-7 flex justify-center">
+                <div class="w-3 h-3 rounded-full bg-neutral-600 mt-1"></div>
+            </div>
+
+            <div>
+                <div class="text-sm font-bold">
+                    Cairo Sports Club
+                </div>
+
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    Football
+                </div>
+
+                <div class="text-[10px] text-neutral-600 mt-1">
+                    2024 — 2026
+                </div>
+            </div>
+
+        </div>
+
+        <div class="relative flex gap-4">
+
+            <div class="relative z-10 w-7 flex justify-center">
+                <div class="w-3 h-3 rounded-full bg-neutral-600 mt-1"></div>
+            </div>
+
+            <div>
+                <div class="text-sm font-bold">
+                    iPLAY Local Academy
+                </div>
+
+                <div class="text-[10px] text-neutral-500 mt-1">
+                    Youth Football
+                </div>
+
+                <div class="text-[10px] text-neutral-600 mt-1">
+                    2022 — 2024
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div><div id="alertModal"
+     class="fixed inset-0 bg-black/70 z-[150] hidden items-center justify-center p-5"><div class="w-full max-w-xs bg-[#1b1b1d] rounded-2xl p-5 text-center border border-neutral-800">
+
+    <div class="w-12 h-12 rounded-full bg-[#20e3b2]/10 text-[#20e3b2] flex items-center justify-center mx-auto">
+        <i class="fa-solid fa-circle-check"></i>
+    </div>
+
+    <div id="alertTitle"
+         class="font-bold mt-3">
+        Done
+    </div>
+
+    <div id="alertText"
+         class="text-xs text-neutral-400 mt-2 leading-relaxed">
+    </div>
+
+    <button id="alertOkBtn"
+            class="w-full mt-5 py-2.5 rounded-xl bg-[#20e3b2] text-black text-xs font-bold">
+        OK
+    </button>
+
+</div>
+
+</div></div><script>
+
+    let hasCustomAvatar = false;
+    let avatarSrc = "";
+
+    let mediaItems = [];
+    let currentMediaIndex = 0;
+    let editingMediaIndex = -1;
+
+    /* =========================================================
+       STORIES
+    ========================================================== */
+
+    let storyItems = [];
+    let storyCurrentIndex = 0;
+    let storyTimer = null;
+    let storyPreviewSrc = "";
+    let storyPreviewIsVideo = false;
+
+    const storyCreatorModal = document.getElementById("storyCreatorModal");
+    const storyCreatorEmpty = document.getElementById("storyCreatorEmpty");
+    const storyCreatorPreview = document.getElementById("storyCreatorPreview");
+    const storyUploadInput = document.getElementById("storyUploadInput");
+    const storyPreviewContainer = document.getElementById("storyPreviewContainer");
+    const storyPreviewAvatar = document.getElementById("storyPreviewAvatar");
+    const storyViewer = document.getElementById("storyViewer");
+    const storyViewerMedia = document.getElementById("storyViewerMedia");
+    const storyProgressContainer = document.getElementById("storyProgressContainer");
+    const storyViewerAvatar = document.getElementById("storyViewerAvatar");
+    const storyPlusBadge = document.getElementById("storyPlusBadge");
+    const ownStoryRing = document.getElementById("ownStoryRing");
+
+    function openStoryCreator() {
+
+        if (visitorMode) return;
+
+        clearStoryPreview();
+
+        storyCreatorModal.classList.remove("hidden");
+        storyCreatorModal.classList.add("flex");
+
+    }
+
+    function closeStoryCreator() {
+
+        clearStoryPreview();
+
+        storyCreatorModal.classList.add("hidden");
+        storyCreatorModal.classList.remove("flex");
+
+    }
+
+    function clearStoryPreview() {
+
+        storyPreviewSrc = "";
+        storyPreviewIsVideo = false;
+
+        storyCreatorEmpty.classList.remove("hidden");
+        storyCreatorPreview.classList.add("hidden");
+
+        storyPreviewContainer.innerHTML = "";
+
+        storyUploadInput.value = "";
+
+    }
+
+    function updateStoryAvatar() {
+
+        const avatarHTML = hasCustomAvatar
+            ? `<img src="${avatarSrc}" class="w-full h-full object-cover">`
+            : `<i class="fa-solid fa-user text-xs text-neutral-500"></i>`;
+
+        storyPreviewAvatar.innerHTML = avatarHTML;
+        storyViewerAvatar.innerHTML = avatarHTML;
+
+    }
+
+    function openStoryFilePicker() {
+
+        if (visitorMode) return;
+
+        storyUploadInput.click();
+
+    }
+
+    document.getElementById("homeUploadStoryBtn").addEventListener("click", () => {
+
+        openStoryCreator();
+
+    });
+
+    document.getElementById("ownStoryBtn").addEventListener("click", () => {
+
+        if (storyItems.length === 0) {
+
+            openStoryCreator();
+
+        } else {
+
+            openStoryViewer(0);
+
+        }
+
+    });
+
+    document.getElementById("chooseStoryMediaBtn").addEventListener("click", () => {
+
+        openStoryFilePicker();
+
+    });
+
+    document.getElementById("changeStoryMediaBtn").addEventListener("click", () => {
+
+        openStoryFilePicker();
+
+    });
+
+    document.getElementById("closeStoryCreator").addEventListener("click", () => {
+
+        closeStoryCreator();
+
+    });
+
+    storyUploadInput.addEventListener("change", event => {
+
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
+
+            showAlert(
+                "Unsupported file",
+                "Please choose an image or video for your story."
+            );
+
+            storyUploadInput.value = "";
+            return;
+
+        }
+
+        if (file.type.startsWith("video/")) {
+
+            const sizeMB = file.size / (1024 * 1024);
+
+            if (sizeMB > 15) {
+
+                showAlert(
+                    "Upload limit",
+                    "Story videos must be smaller than 15 MB in this prototype."
+                );
+
+                storyUploadInput.value = "";
+                return;
+
+            }
+
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = e => {
+
+            storyPreviewSrc = e.target.result;
+            storyPreviewIsVideo = file.type.startsWith("video/");
+
+            storyCreatorEmpty.classList.add("hidden");
+            storyCreatorPreview.classList.remove("hidden");
+
+            updateStoryAvatar();
+
+            if (storyPreviewIsVideo) {
+
+                storyPreviewContainer.innerHTML =
+                    `<video src="${storyPreviewSrc}" autoplay muted loop playsinline class="story-media w-full h-full"></video>`;
+
+            } else {
+
+                storyPreviewContainer.innerHTML =
+                    `<img src="${storyPreviewSrc}" class="story-media w-full h-full">`;
+
+            }
+
+        };
+
+        reader.readAsDataURL(file);
+
+        storyUploadInput.value = "";
+
+    });
+
+    document.getElementById("shareStoryBtn").addEventListener("click", () => {
+
+        if (!storyPreviewSrc) return;
+
+        storyItems.push({
+            src: storyPreviewSrc,
+            isVideo: storyPreviewIsVideo,
+            createdAt: Date.now()
+        });
+
+        renderStories();
+
+        closeStoryCreator();
+
+        showAlert(
+            "Story shared",
+            "Your photo or video has been added to your story."
+        );
+
+    });
+
+    function renderStories() {
+
+        if (storyItems.length > 0) {
+
+            ownStoryRing.style.background =
+                "linear-gradient(135deg,#2af598,#20e3b2,#fe2c55)";
+
+            storyPlusBadge.classList.add("hidden");
+
+        } else {
+
+            ownStoryRing.style.background =
+                "linear-gradient(135deg,#2af598,#20e3b2,#fe2c55)";
+
+            storyPlusBadge.classList.remove("hidden");
+
+        }
+
+        updateStoryAvatar();
+
+    }
+
+    function buildStoryProgressBars() {
+
+        storyProgressContainer.innerHTML = "";
+
+        storyItems.forEach((item, index) => {
+
+            const wrapper = document.createElement("div");
+
+            wrapper.className = "flex-1 story-progress-bar";
+
+            const fill = document.createElement("div");
+
+            fill.id = `storyProgress_${index}`;
+            fill.className = "story-progress-fill";
+
+            if (index < storyCurrentIndex) {
+                fill.classList.add("completed");
+            }
+
+            wrapper.appendChild(fill);
+            storyProgressContainer.appendChild(wrapper);
+
+        });
+
+    }
+
+    function openStoryViewer(index) {
+
+        if (storyItems.length === 0) return;
+
+        clearStoryTimer();
+
+        if (index < 0) index = 0;
+
+        if (index >= storyItems.length) {
+
+            closeStoryViewer();
+            return;
+
+        }
+
+        storyCurrentIndex = index;
+
+        buildStoryProgressBars();
+        updateStoryAvatar();
+
+        storyViewer.classList.remove("hidden");
+
+        renderCurrentStory();
+
+    }
+
+    function renderCurrentStory() {
+
+        clearStoryTimer();
+
+        const item = storyItems[storyCurrentIndex];
+
+        if (!item) {
+
+            closeStoryViewer();
+            return;
+
+        }
+
+        storyViewerMedia.innerHTML = "";
+
+        const progressBars =
+            storyProgressContainer.querySelectorAll(".story-progress-fill");
+
+        progressBars.forEach((bar, index) => {
+
+            bar.classList.remove("active");
+
+            if (index < storyCurrentIndex) {
+
+                bar.classList.add("completed");
+                bar.style.width = "100%";
+
+            } else {
+
+                bar.classList.remove("completed");
+                bar.style.width = "0%";
+
+            }
+
+        });
+
+        if (item.isVideo) {
+
+            const video = document.createElement("video");
+
+            video.src = item.src;
+            video.autoplay = true;
+            video.muted = false;
+            video.playsInline = true;
+            video.className = "story-media w-full h-full";
+
+            storyViewerMedia.appendChild(video);
+
+            const activeBar =
+                document.getElementById(`storyProgress_${storyCurrentIndex}`);
+
+            video.addEventListener("loadedmetadata", () => {
+
+                const duration =
+                    Math.max(1, Math.min(video.duration || 15, 60));
+
+                if (activeBar) {
+
+                    activeBar.classList.add("active");
+                    activeBar.style.animationDuration = `${duration}s`;
+
+                }
+
+                video.play().catch(() => {});
+
+            });
+
+            video.addEventListener("ended", () => {
+
+                goToNextStory();
+
+            });
+
+            setTimeout(() => {
+
+                if (video.readyState < 1) {
+
+                    const activeBar =
+                        document.getElementById(`storyProgress_${storyCurrentIndex}`);
+
+                    if (activeBar) {
+
+                        activeBar.classList.add("active");
+                        activeBar.style.animationDuration = "15s";
+
+                    }
+
+                    storyTimer = setTimeout(() => {
+
+                        goToNextStory();
+
+                    }, 15000);
+
+                }
+
+            }, 500);
+
+        } else {
+
+            const img = document.createElement("img");
+
+            img.src = item.src;
+            img.className = "story-media w-full h-full";
+
+            storyViewerMedia.appendChild(img);
+
+            const activeBar =
+                document.getElementById(`storyProgress_${storyCurrentIndex}`);
+
+            if (activeBar) {
+
+                activeBar.classList.add("active");
+                activeBar.style.animationDuration = "5s";
+
+            }
+
+            storyTimer = setTimeout(() => {
+
+                goToNextStory();
+
+            }, 5000);
+
+        }
+
+    }
+
+    function goToNextStory() {
+
+        clearStoryTimer();
+
+        if (storyCurrentIndex < storyItems.length - 1) {
+
+            storyCurrentIndex++;
+            renderCurrentStory();
+
+        } else {
+
+            closeStoryViewer();
+
+        }
+
+    }
+
+    function goToPreviousStory() {
+
+        clearStoryTimer();
+
+        if (storyCurrentIndex > 0) {
+
+            storyCurrentIndex--;
+            renderCurrentStory();
+
+        } else {
+
+            closeStoryViewer();
+
+        }
+
+    }
+
+    function clearStoryTimer() {
+
+        if (storyTimer) {
+
+            clearTimeout(storyTimer);
+            storyTimer = null;
+
+        }
+
+    }
+
+    function closeStoryViewer() {
+
+        clearStoryTimer();
+
+        const video = storyViewerMedia.querySelector("video");
+
+        if (video) {
+
+            video.pause();
+
+        }
+
+        storyViewerMedia.innerHTML = "";
+
+        storyViewer.classList.add("hidden");
+
+    }
+
+    document.getElementById("closeStoryViewer").addEventListener("click", () => {
+
+        closeStoryViewer();
+
+    });
+
+    document.getElementById("storyTapRight").addEventListener("click", () => {
+
+        goToNextStory();
+
+    });
+
+    document.getElementById("storyTapLeft").addEventListener("click", () => {
+
+        goToPreviousStory();
+
+    });
+
+    storyViewer.addEventListener("touchstart", event => {
+
+        if (event.target.closest("#closeStoryViewer")) return;
+
+        storyViewer.dataset.touchStartX =
+            event.changedTouches[0].screenX;
+
+    });
+
+    storyViewer.addEventListener("touchend", event => {
+
+        if (event.target.closest("#closeStoryViewer")) return;
+
+        const startX =
+            Number(storyViewer.dataset.touchStartX || 0);
+
+        const endX =
+            event.changedTouches[0].screenX;
+
+        const diff = startX - endX;
+
+        if (Math.abs(diff) < 60) return;
+
+        if (diff > 0) {
+
+            goToNextStory();
+
+        } else {
+
+            goToPreviousStory();
+
+        }
+
+    });
+
+    const homeSection = document.getElementById("homeSection");
+    const profileHeader = document.getElementById("profileHeader");
+    const profileTopSection = document.getElementById("profileTopSection");
+    const profileMainSection = document.getElementById("profileMainSection");
+
+    const homePostsContainer = document.getElementById("homePostsContainer");
+    const homeEmptyState = document.getElementById("homeEmptyState");
+
+    function showHome() {
+
+        homeSection.classList.remove("hidden");
+
+        profileHeader.classList.add("hidden");
+        profileTopSection.classList.add("hidden");
+        profileMainSection.classList.add("hidden");
+
+        renderHomeFeed();
+        renderStories();
+
+        window.scrollTo(0, 0);
+
+    }
+
+    function showProfile() {
+
+        homeSection.classList.add("hidden");
+
+        profileHeader.classList.remove("hidden");
+        profileTopSection.classList.remove("hidden");
+        profileMainSection.classList.remove("hidden");
+
+        window.scrollTo(0, 0);
+
+    }
+
+    document.getElementById("homeProfileBtn").addEventListener("click", () => {
+
+        showProfile();
+
+    });
+
+    document.getElementById("homeNotificationBtn").addEventListener("click", () => {
+
+        showAlert(
+            "Notifications",
+            "Your notifications center will show follows, badges, competition updates and rewards."
+        );
+
+    });
+
+    const tabs = {
+        overview: document.getElementById("overviewSection"),
+        content: document.getElementById("contentSection"),
+        competitions: document.getElementById("competitionsSection"),
+        fantasy: document.getElementById("fantasySection")
+    };
+
+    const tabButtons = {
+        overview: document.getElementById("mainTabOverview"),
+        content: document.getElementById("mainTabContent"),
+        competitions: document.getElementById("mainTabCompetitions"),
+        fantasy: document.getElementById("mainTabFantasy")
+    };
+
+    function activateMainTab(tabName) {
+
+        const currentScrollY = window.scrollY;
+
+        Object.keys(tabs).forEach(key => {
+            tabs[key].classList.add("hidden");
+            tabButtons[key].classList.remove("active-main-tab");
+            tabButtons[key].classList.add("inactive-main-tab");
+        });
+
+        tabs[tabName].classList.remove("hidden");
+
+        tabButtons[tabName].classList.remove("inactive-main-tab");
+        tabButtons[tabName].classList.add("active-main-tab");
+
+        if (tabName === "fantasy") {
+            renderSavedTeam();
+        }
+
+        window.scrollTo(0, currentScrollY);
+    }
+
+    Object.keys(tabButtons).forEach(key => {
+
+        tabButtons[key].addEventListener("click", () => {
+            activateMainTab(key);
+        });
+
+    });
+
+    const avatarContainer = document.getElementById("avatarContainer");
+    const avatarModal = document.getElementById("avatarModal");
+    const imageUploadInput = document.getElementById("imageUploadInput");
+    const avatarInner = document.getElementById("avatarInner");
+    const viewerAvatar = document.getElementById("viewerAvatar");
+    const avatarEditBadge = document.getElementById("avatarEditBadge");
+    const homeAvatar = document.getElementById("homeAvatar");
+    const storyAvatar = document.getElementById("storyAvatar");
+
+    avatarContainer.addEventListener("click", () => {
+
+        if (visitorMode) return;
+
+        avatarModal.classList.remove("hidden");
+        avatarModal.classList.add("flex");
+
+    });
+
+    document.getElementById("closeAvatarModal").addEventListener("click", closeAvatarModal);
+
+    function closeAvatarModal() {
+        avatarModal.classList.add("hidden");
+        avatarModal.classList.remove("flex");
+    }
+
+    document.getElementById("changeAvatarBtn").addEventListener("click", () => {
+
+        closeAvatarModal();
+        imageUploadInput.click();
+
+    });
+
+    document.getElementById("viewAvatarBtn").addEventListener("click", () => {
+
+        if (!hasCustomAvatar) {
+
+            showAlert(
+                "Profile photo",
+                "You have not uploaded a profile photo yet."
+            );
+
+            return;
+        }
+
+        closeAvatarModal();
+
+        document.getElementById("fullScreenContainer").innerHTML =
+            `<img src="${avatarSrc}" class="w-full h-full object-contain">`;
+
+        resetViewerUI();
+
+        document.getElementById("mediaViewer").classList.remove("hidden");
+
+    });
+
+    imageUploadInput.addEventListener("change", event => {
+
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = e => {
+
+            avatarSrc = e.target.result;
+            hasCustomAvatar = true;
+
+            avatarInner.innerHTML =
+                `<img src="${avatarSrc}" class="w-full h-full object-cover">`;
+
+            viewerAvatar.innerHTML =
+                `<img src="${avatarSrc}" class="w-full h-full object-cover">`;
+
+            homeAvatar.innerHTML =
+                `<img src="${avatarSrc}" class="w-full h-full object-cover">`;
+
+            storyAvatar.innerHTML =
+                `<img src="${avatarSrc}" class="w-full h-full object-cover">`;
+
+            updateStoryAvatar();
+
+            renderHomeFeed();
+
+        };
+
+        reader.readAsDataURL(file);
+
+        imageUploadInput.value = "";
+
+    });
+
+    const editModal = document.getElementById("editModal");
+
+    document.getElementById("editProfileBtn").addEventListener("click", () => {
+
+        editModal.classList.remove("hidden");
+        editModal.classList.add("flex");
+
+    });
+
+    document.getElementById("closeEditModal").addEventListener("click", () => {
+
+        editModal.classList.add("hidden");
+        editModal.classList.remove("flex");
+
+    });
+
+    document.getElementById("saveProfileBtn").addEventListener("click", () => {
+
+        editModal.classList.add("hidden");
+        editModal.classList.remove("flex");
+
+        showAlert(
+            "Profile updated",
+            "Your sports identity has been updated successfully."
+        );
+
+    });
+
+    let visitorMode = false;
+
+    const editProfileBtn = document.getElementById("editProfileBtn");
+    const visitorBtn = document.getElementById("visitorBtn");
+    const followBtn = document.getElementById("followBtn");
+    const uploadTriggerBtn = document.getElementById("uploadTriggerBtn");
+    const emptyUploadTitle = document.getElementById("emptyUploadTitle");
+    const emptyUploadText = document.getElementById("emptyUploadText");
+    const viewerLikeBtn = document.getElementById("viewerLikeBtn");
+    const viewerLikeIcon = document.getElementById("viewerLikeIcon");
+    const viewerDeleteBtn = document.getElementById("viewerDeleteBtn");
+    const viewerEditBtn = document.getElementById("viewerEditBtn");
+    const editMediaInput = document.getElementById("editMediaInput");
+    const deleteConfirmModal = document.getElementById("deleteConfirmModal");
+    const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+    const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+
+    let demoFollowed = false;
+    let demoLiked = false;
+    let demoLikeCount = 358;
+
+    function setVisitorMode(enabled) {
+
+        visitorMode = enabled;
+
+        if (visitorMode) {
+
+            editProfileBtn.classList.add("hidden");
+            visitorBtn.classList.add("hidden");
+            followBtn.classList.remove("hidden");
+
+            avatarEditBadge.classList.add("hidden");
+
+            uploadTriggerBtn.classList.add("hidden");
+
+            viewerDeleteBtn.classList.add("hidden");
+            viewerEditBtn.classList.add("hidden");
+
+            emptyUploadTitle.textContent = "There is no content yet.";
+            emptyUploadText.textContent = "This profile has not uploaded any content.";
+
+            if (mediaItems.length === 0) {
+
+                emptyUploadState.classList.remove("hidden");
+
+            }
+
+        } else {
+
+            editProfileBtn.classList.remove("hidden");
+            visitorBtn.classList.remove("hidden");
+            followBtn.classList.add("hidden");
+
+            avatarEditBadge.classList.remove("hidden");
+
+            uploadTriggerBtn.classList.remove("hidden");
+
+            viewerDeleteBtn.classList.remove("hidden");
+            viewerEditBtn.classList.remove("hidden");
+
+            emptyUploadTitle.textContent = "Share your sports journey";
+            emptyUploadText.textContent = "Upload photos, skills and highlights.";
+
+        }
+
+    }
+
+    visitorBtn.addEventListener("click", () => {
+
+        history.pushState(
+            { visitorMode: true },
+            "",
+            window.location.href
+        );
+
+        setVisitorMode(true);
+
+    });
+
+    followBtn.addEventListener("click", () => {
+
+        demoFollowed = !demoFollowed;
+
+        if (demoFollowed) {
+
+            followBtn.textContent = "Following";
+
+        } else {
+
+            followBtn.textContent = "Follow";
+
+        }
+
+    });
+
+    window.addEventListener("popstate", () => {
+
+        setVisitorMode(false);
+
+    });
+
+    /* =========================================================
+       SHARE
+    ========================================================== */
+
+    document.getElementById("shareProfileBtn").addEventListener("click", async () => {
+
+        const shareData = {
+            title: "Mekki on iPLAY",
+            text: "Check out my sports profile on iPLAY.",
+            url: window.location.href
+        };
+
+        try {
+
+            if (navigator.share) {
+                await navigator.share(shareData);
+            } else {
+                showAlert(
+                    "Profile link",
+                    "Share functionality is available when the profile is connected to the iPLAY backend."
+                );
+            }
+
+        } catch (error) {}
+
+    });
+
+    const badgesModal = document.getElementById("badgesModal");
+
+    document.getElementById("allBadgesBtn").addEventListener("click", () => {
+
+        badgesModal.classList.remove("hidden");
+        badgesModal.classList.add("flex");
+
+    });
+
+    document.getElementById("closeBadgesModal").addEventListener("click", () => {
+
+        badgesModal.classList.add("hidden");
+        badgesModal.classList.remove("flex");
+
+    });
+
+    const careerModal = document.getElementById("careerModal");
+
+    document.getElementById("careerDetailsBtn").addEventListener("click", () => {
+
+        careerModal.classList.remove("hidden");
+        careerModal.classList.add("flex");
+
+    });
+
+    document.getElementById("closeCareerModal").addEventListener("click", () => {
+
+        careerModal.classList.add("hidden");
+        careerModal.classList.remove("flex");
+
+    });
+
+    const gridUploadInput = document.getElementById("gridUploadInput");
+
+    const emptyUploadState = document.getElementById("emptyUploadState");
+    const mediaGridContainer = document.getElementById("mediaGridContainer");
+
+    uploadTriggerBtn.addEventListener("click", () => {
+
+        if (visitorMode) return;
+
+        gridUploadInput.click();
+
+    });
+
+    gridUploadInput.addEventListener("change", event => {
+
+        if (visitorMode) return;
+
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        if (file.type.startsWith("video/")) {
+
+            const sizeMB = file.size / (1024 * 1024);
+
+            if (sizeMB > 5) {
+
+                showAlert(
+                    "Upload limit",
+                    "Videos must be smaller than 5 MB in this prototype."
+                );
+
+                gridUploadInput.value = "";
+                return;
+
+            }
+
+        }
+
+        const caption = window.prompt(
+            "Add a caption (optional):",
+            ""
+        );
+
+        const reader = new FileReader();
+
+        reader.onload = e => {
+
+            const item = {
+
+                src: e.target.result,
+
+                isVideo: file.type.startsWith("video/"),
+
+                likes:
+                    (Math.random() * 20 + 1).toFixed(1) + "K",
+
+                reposts:
+                    Math.floor(Math.random() * 1000),
+
+                shares:
+                    Math.floor(Math.random() * 500),
+
+                caption:
+                    caption ? caption.trim() : ""
+
+            };
+
+            mediaItems.push(item);
+
+            renderMediaGrid();
+            renderHomeFeed();
+
+        };
+
+        reader.readAsDataURL(file);
+
+        gridUploadInput.value = "";
+
+    });
+
+    function renderMediaGrid() {
+
+        if (mediaItems.length === 0) {
+
+            mediaGridContainer.classList.add("hidden");
+            emptyUploadState.classList.remove("hidden");
+
+            if (visitorMode) {
+
+                emptyUploadTitle.textContent = "There is no content yet.";
+                emptyUploadText.textContent = "This profile has not uploaded any content.";
+
+            } else {
+
+                emptyUploadTitle.textContent = "Share your sports journey";
+                emptyUploadText.textContent = "Upload photos, skills and highlights.";
+
+            }
+
+            return;
+
+        }
+
+        emptyUploadState.classList.add("hidden");
+        mediaGridContainer.classList.remove("hidden");
+
+        mediaGridContainer.innerHTML = "";
+
+        mediaItems.forEach((item, index) => {
+
+            const div = document.createElement("div");
+
+            div.className = "media-item";
+
+            if (item.isVideo) {
+
+                div.innerHTML = `
+                    <video src="${item.src}"></video>
+
+                    <div class="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-black/70 to-transparent"></div>
+
+                    <div class="absolute top-1 left-1 text-[9px] bg-black/50 rounded px-1.5 py-1">
+                        <i class="fa-solid fa-play mr-1"></i>
+                        Video
+                    </div>
+
+                    <div class="absolute bottom-2 left-2 text-[10px] font-semibold">
+                        <i class="fa-solid fa-heart text-[#fe2c55] mr-1"></i>
+                        ${item.likes}
+                    </div>
+                `;
+
+            } else {
+
+                div.innerHTML = `
+                    <img src="${item.src}">
+
+                    <div class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+                    <div class="absolute bottom-2 left-2 text-[10px] font-semibold">
+                        <i class="fa-solid fa-heart text-[#fe2c55] mr-1"></i>
+                        ${item.likes}
+                    </div>
+                `;
+
+            }
+
+            div.addEventListener("click", () => {
+
+                currentMediaIndex = index;
+
+                openMediaViewer();
+
+            });
+
+            mediaGridContainer.appendChild(div);
+
+        });
+
+    }
+
+    /* =========================================================
+       HOME FEED
+    ========================================================== */
+
+    function formatFeedNumber(value) {
+
+        const number = Number(value) || 0;
+
+        if (number >= 1000000) {
+            return (number / 1000000).toFixed(1).replace(".0","") + "M";
+        }
+
+        if (number >= 1000) {
+            return (number / 1000).toFixed(1).replace(".0","") + "K";
+        }
+
+        return number;
+
+    }
+
+    function renderHomeFeed() {
+
+        if (mediaItems.length === 0) {
+
+            homeEmptyState.classList.remove("hidden");
+            homePostsContainer.innerHTML = "";
+
+            return;
+
+        }
+
+        homeEmptyState.classList.add("hidden");
+        homePostsContainer.innerHTML = "";
+
+        [...mediaItems].reverse().forEach((item, reversedIndex) => {
+
+            const actualIndex = mediaItems.length - 1 - reversedIndex;
+
+            const post = document.createElement("article");
+
+            post.className = "border-b border-neutral-900 pb-5 mb-5";
+
+            const avatarHTML = hasCustomAvatar
+                ? `<img src="${avatarSrc}" class="w-full h-full object-cover">`
+                : `<i class="fa-solid fa-user text-xs text-neutral-500"></i>`;
+
+            const mediaHTML = item.isVideo
+                ? `
+                    <div class="relative bg-neutral-950 mt-3 overflow-hidden">
+                        <video
+                            src="${item.src}"
+                            controls
+                            playsinline
+                            class="w-full max-h-[520px] object-contain bg-black">
+                        </video>
+                    </div>
+                `
+                : `
+                    <div class="relative bg-neutral-950 mt-3 overflow-hidden">
+                        <img
+                            src="${item.src}"
+                            class="w-full max-h-[520px] object-contain bg-black"
+                            alt="iPLAY post">
+                    </div>
+                `;
+
+            const captionHTML = item.caption
+                ? `
+                    <div class="px-4 pt-3 text-sm text-neutral-200 leading-relaxed">
+                        ${escapeHTML(item.caption)}
+                    </div>
+                `
+                : "";
+
+            post.innerHTML = `
+
+                <div class="px-4 pt-3 flex items-center justify-between">
+
+                    <div class="flex items-center gap-3">
+
+                        <div class="w-10 h-10 rounded-full p-[1px]"
+                             style="background:linear-gradient(135deg,#2af598,#20e3b2,#fe2c55);">
+
+                            <div class="w-full h-full rounded-full bg-neutral-900 overflow-hidden flex items-center justify-center">
+                                ${avatarHTML}
+                            </div>
+
+                        </div>
+
+                        <div>
+
+                            <div class="flex items-center gap-1">
+
+                                <span class="text-xs font-bold">
+                                    Mekki
+                                </span>
+
+                                <i class="fa-solid fa-circle-check text-cyan-400 text-[9px]"></i>
+
+                            </div>
+
+                            <div class="text-[9px] text-neutral-600 mt-0.5">
+                                @Mekki · iPLAY
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <button class="text-neutral-500 text-sm">
+                        <i class="fa-solid fa-ellipsis"></i>
+                    </button>
+
+                </div>
+
+                ${captionHTML}
+
+                ${mediaHTML}
+
+                <div class="px-4 pt-3">
+
+                    <div class="flex items-center justify-between">
+
+                        <div class="flex items-center gap-5">
+
+                            <button class="home-like-btn flex items-center gap-1.5 text-neutral-300"
+                                    data-index="${actualIndex}">
+
+                                <i class="fa-solid fa-heart text-[#fe2c55] text-sm"></i>
+
+                                <span class="text-[10px] font-semibold">
+                                    ${item.likes}
+                                </span>
+
+                            </button>
+
+                            <button class="flex items-center gap-1.5 text-neutral-300">
+
+                                <i class="fa-solid fa-repeat text-sm"></i>
+
+                                <span class="text-[10px] font-semibold">
+                                    ${formatFeedNumber(item.reposts)}
+                                </span>
+
+                            </button>
+
+                            <button class="flex items-center gap-1.5 text-neutral-300">
+
+                                <i class="fa-solid fa-share text-sm"></i>
+
+                                <span class="text-[10px] font-semibold">
+                                    ${formatFeedNumber(item.shares)}
+                                </span>
+
+                            </button>
+
+                        </div>
+
+                        <button class="text-neutral-500 text-sm">
+
+                            <i class="fa-regular fa-bookmark"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+            const likeButton = post.querySelector(".home-like-btn");
+
+            likeButton.addEventListener("click", () => {
+
+                const currentItem = mediaItems[actualIndex];
+
+                if (!currentItem) return;
+
+                if (!currentItem.feedLiked) {
+
+                    currentItem.feedLiked = true;
+
+                    const currentNumber =
+                        parseFloat(String(currentItem.likes).replace("K","")) * 1000;
+
+                    currentItem.likes =
+                        ((currentNumber + 1) / 1000).toFixed(1) + "K";
+
+                }
+
+                renderHomeFeed();
+
+            });
+
+            homePostsContainer.appendChild(post);
+
+        });
+
+    }
+
+    function escapeHTML(text) {
+
+        const div = document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+
+    }
+
+    const mediaViewer = document.getElementById("mediaViewer");
+    const fullScreenContainer = document.getElementById("fullScreenContainer");
+    const viewerLikes = document.getElementById("viewerLikes");
+    const closeMediaViewer = document.getElementById("closeMediaViewer");
+    const viewerActions = document.getElementById("viewerActions");
+    const viewerProfile = document.getElementById("viewerProfile");
+
+    let viewerUIHidden = false;
+
+    function resetViewerUI() {
+
+        viewerUIHidden = false;
+
+        closeMediaViewer.classList.remove("viewer-ui-hidden");
+        viewerActions.classList.remove("viewer-ui-hidden");
+        viewerProfile.classList.remove("viewer-ui-hidden");
+
+    }
+
+    function toggleViewerUI() {
+
+        viewerUIHidden = !viewerUIHidden;
+
+        if (viewerUIHidden) {
+
+            closeMediaViewer.classList.add("viewer-ui-hidden");
+            viewerActions.classList.add("viewer-ui-hidden");
+            viewerProfile.classList.add("viewer-ui-hidden");
+
+        } else {
+
+            closeMediaViewer.classList.remove("viewer-ui-hidden");
+            viewerActions.classList.remove("viewer-ui-hidden");
+            viewerProfile.classList.remove("viewer-ui-hidden");
+
+        }
+
+    }
+
+    function openMediaViewer() {
+
+        if (!mediaItems[currentMediaIndex]) return;
+
+        const item = mediaItems[currentMediaIndex];
+
+        resetViewerUI();
+
+        if (visitorMode) {
+
+            demoLiked = false;
+            demoLikeCount = 358;
+
+            viewerLikes.textContent = demoLikeCount;
+
+            viewerLikeIcon.classList.remove("text-white");
+            viewerLikeIcon.classList.add("text-[#fe2c55]");
+
+            viewerDeleteBtn.classList.add("hidden");
+            viewerEditBtn.classList.add("hidden");
+
+        } else {
+
+            viewerLikes.textContent = item.likes;
+
+            viewerDeleteBtn.classList.remove("hidden");
+            viewerEditBtn.classList.remove("hidden");
+
+        }
+
+        if (item.isVideo) {
+
+            fullScreenContainer.innerHTML =
+                `<video src="${item.src}" controls autoplay playsinline class="w-full h-full object-contain"></video>`;
+
+        } else {
+
+            fullScreenContainer.innerHTML =
+                `<img src="${item.src}" class="w-full h-full object-contain">`;
+
+        }
+
+        mediaViewer.classList.remove("hidden");
+
+    }
+
+    fullScreenContainer.addEventListener("click", event => {
+
+        if (event.target.closest("button") || event.target.closest(".viewer-ui")) {
+            return;
+        }
+
+        toggleViewerUI();
+
+    });
+
+    viewerLikeBtn.addEventListener("click", () => {
+
+        if (!visitorMode) return;
+
+        if (demoLiked) return;
+
+        demoLiked = true;
+        demoLikeCount++;
+
+        viewerLikes.textContent = demoLikeCount;
+
+        viewerLikeIcon.classList.remove("text-[#fe2c55]");
+        viewerLikeIcon.classList.add("text-white");
+
+    });
+
+    viewerDeleteBtn.addEventListener("click", () => {
+
+        if (visitorMode) return;
+
+        if (!mediaItems[currentMediaIndex]) return;
+
+        deleteConfirmModal.classList.remove("hidden");
+        deleteConfirmModal.classList.add("flex");
+
+    });
+
+    cancelDeleteBtn.addEventListener("click", () => {
+
+        deleteConfirmModal.classList.add("hidden");
+        deleteConfirmModal.classList.remove("flex");
+
+    });
+
+    confirmDeleteBtn.addEventListener("click", () => {
+
+        if (visitorMode) return;
+
+        if (!mediaItems[currentMediaIndex]) return;
+
+        mediaItems.splice(currentMediaIndex, 1);
+
+        deleteConfirmModal.classList.add("hidden");
+        deleteConfirmModal.classList.remove("flex");
+
+        const video = fullScreenContainer.querySelector("video");
+
+        if (video) video.pause();
+
+        mediaViewer.classList.add("hidden");
+
+        if (currentMediaIndex >= mediaItems.length) {
+            currentMediaIndex = Math.max(0, mediaItems.length - 1);
+        }
+
+        renderMediaGrid();
+        renderHomeFeed();
+
+    });
+
+    viewerEditBtn.addEventListener("click", () => {
+
+        if (visitorMode) return;
+
+        if (!mediaItems[currentMediaIndex]) return;
+
+        editingMediaIndex = currentMediaIndex;
+
+        editMediaInput.value = "";
+        editMediaInput.click();
+
+    });
+
+    editMediaInput.addEventListener("change", event => {
+
+        if (visitorMode) return;
+
+        const file = event.target.files[0];
+
+        if (!file) return;
+
+        if (editingMediaIndex < 0 || !mediaItems[editingMediaIndex]) {
+
+            editMediaInput.value = "";
+            editingMediaIndex = -1;
+            return;
+
+        }
+
+        if (file.type.startsWith("video/")) {
+
+            const sizeMB = file.size / (1024 * 1024);
+
+            if (sizeMB > 5) {
+
+                showAlert(
+                    "Upload limit",
+                    "Videos must be smaller than 5 MB in this prototype."
+                );
+
+                editMediaInput.value = "";
+                editingMediaIndex = -1;
+                return;
+
+            }
+
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = e => {
+
+            mediaItems[editingMediaIndex].src = e.target.result;
+            mediaItems[editingMediaIndex].isVideo = file.type.startsWith("video/");
+
+            currentMediaIndex = editingMediaIndex;
+
+            editingMediaIndex = -1;
+
+            renderMediaGrid();
+            renderHomeFeed();
+            openMediaViewer();
+
+        };
+
+        reader.readAsDataURL(file);
+
+        editMediaInput.value = "";
+
+    });
+
+    closeMediaViewer.addEventListener("click", () => {
+
+        const video = fullScreenContainer.querySelector("video");
+
+        if (video) video.pause();
+
+        mediaViewer.classList.add("hidden");
+
+    });
+
+    let touchStartX = 0;
+
+    mediaViewer.addEventListener("touchstart", event => {
+
+        touchStartX = event.changedTouches[0].screenX;
+
+    });
+
+    mediaViewer.addEventListener("touchend", event => {
+
+        const touchEndX = event.changedTouches[0].screenX;
+        const diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) < 50) return;
+
+        if (diff > 0 && currentMediaIndex < mediaItems.length - 1) {
+
+            currentMediaIndex++;
+            openMediaViewer();
+
+        } else if (diff < 0 && currentMediaIndex > 0) {
+
+            currentMediaIndex--;
+            openMediaViewer();
+
+        }
+
+    });
+
+    function getPlayerCardHTML(player, captain) {
+
+        return `
+            <div class="player-card">
+
+                <div class="shirt-box">
+
+                    ${captain ? `
+                        <div class="absolute -mt-12 -ml-12 w-4 h-4 bg-black rounded-full text-[8px] flex items-center justify-center border border-white">
+                            C
+                        </div>
+                    ` : ""}
+
+                    <img
+                        src="${player.clubImg}"
+                        alt=""
+                        onerror="this.style.display='none'">
+                </div>
+
+                <div class="player-pill">
+
+                    <div class="text-[10px] font-bold truncate px-1">
+                        ${player.name}
+                    </div>
+
+                    <div class="text-[8px] text-neutral-500">
+                        €${player.price}m
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+
+    }
+
+    function renderSavedTeam() {
+
+        const container = document.getElementById("teamTabContent");
+
+        let saved = null;
+
+        try {
+
+            const raw = localStorage.getItem("iPLAY_saved_team");
+
+            saved = raw ? JSON.parse(raw) : null;
+
+        } catch (error) {
+
+            saved = null;
+
+        }
+
+        if (!saved || !saved.players || !saved.players.gk || !saved.players.gk[0]) {
+
+            container.innerHTML = `
+                <div class="soft-card rounded-2xl p-10 text-center">
+
+                    <div class="w-14 h-14 rounded-full bg-neutral-900 flex items-center justify-center mx-auto text-neutral-500 text-xl">
+                        <i class="fa-solid fa-futbol"></i>
+                    </div>
+
+                    <div class="text-sm font-semibold mt-4">
+                        No saved fantasy team yet
+                    </div>
+
+                    <div class="text-[10px] text-neutral-600 mt-2">
+                        Build your team to see it here.
+                    </div>
+
+                </div>
+            `;
+
+            return;
+
+        }
+
+        const parts = String(saved.formation || "4-4-2").split("-");
+
+        const defCount = parseInt(parts[0]) || 4;
+        const midCount = parseInt(parts[1]) || 4;
+        const fwdCount = parseInt(parts[2]) || 2;
+
+        function buildRow(list, count) {
+
+            let html = "";
+
+            for (let i = 0; i < count; i++) {
+
+                const player = list[i];
+
+                if (!player) continue;
+
+                html += getPlayerCardHTML(
+                    player,
+                    saved.captainName === player.name
+                );
+
+            }
+
+            return html;
+
+        }
+
+        container.innerHTML = `
+
+            <div class="soft-card rounded-2xl p-2 overflow-hidden">
+
+                <div class="flex justify-between items-center px-3 pt-3">
+
+                    <div>
+                        <div class="text-xs font-bold">
+                            ${saved.formation || "4-4-2"}
+                        </div>
+
+                        <div class="text-[9px] text-neutral-600 mt-1">
+                            Gameweek 1
+                        </div>
+                    </div>
+
+                    <div class="text-[10px] text-[#20e3b2]">
+                        SAVED
+                    </div>
+
+                </div>
+
+                <div class="pitch">
+
+                    <div class="goal-area"></div>
+
+                    <div class="pitch-row">
+                        ${buildRow(saved.players.gk,1)}
+                    </div>
+
+                    <div class="pitch-row">
+                        ${buildRow(saved.players.def,defCount)}
+                    </div>
+
+                    <div class="pitch-row">
+                        ${buildRow(saved.players.mid,midCount)}
+                    </div>
+
+                    <div class="pitch-row">
+                        ${buildRow(saved.players.fwd,fwdCount)}
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+
+    }
+
+    document.getElementById("refreshTeamBtn").addEventListener("click", () => {
+
+        renderSavedTeam();
+
+    });
+
+    function showAlert(title, text) {
+
+        document.getElementById("alertTitle").textContent = title;
+        document.getElementById("alertText").textContent = text;
+
+        const modal = document.getElementById("alertModal");
+
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+
+    }
+
+    document.getElementById("alertOkBtn").addEventListener("click", () => {
+
+        const modal = document.getElementById("alertModal");
+
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+
+    });
+
+    document.getElementById("notificationBtn").addEventListener("click", () => {
+
+        showAlert(
+            "Notifications",
+            "Your notifications center will show follows, badges, competition updates and rewards."
+        );
+
+    });
+
+    document.getElementById("moreBtn").addEventListener("click", () => {
+
+        showAlert(
+            "Profile menu",
+            "Settings, privacy, verification and account tools can live here."
+        );
+
+    });
+
+    document.getElementById("backBtn").addEventListener("click", () => {
+
+        navigationBack();
+
+    });
+
+    renderStories();
+    activateMainTab("overview");
+
+    window.addEventListener("pageshow", () => {
+        initializeNavigation();
+    });
+
+</script>
+
+<script src="navigation.js"></script>
+
+</body>
+</html>

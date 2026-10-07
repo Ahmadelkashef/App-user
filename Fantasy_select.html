@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <meta name="theme-color" content="#090412">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>iPLAY Fantasy</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="overall_logo.jpg">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    rgba(9,4,18,0.58),
+                    rgba(9,4,18,0.58)
+                ),
+                url("https://huggingface.co/datasets/Meekkii/IPLAY/resolve/main/Images/Fantasy/Fantasy_selection_background.jpg")
+                center center /
+                cover
+                no-repeat;
+
+            color: white;
+
+            font-family:
+                'Segoe UI',
+                Arial,
+                sans-serif;
+
+            overflow-x: hidden;
+        }
+
+
+        /* ==========================================
+           PAGE
+        ========================================== */
+
+        .page {
+
+            width: 100%;
+            max-width: 620px;
+
+            margin: 0 auto;
+
+            padding:
+                28px
+                16px
+                30px;
+
+        }
+
+
+        /* ==========================================
+           DIVIDER
+        ========================================== */
+
+        .section-divider {
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            margin:
+                0
+                0
+                13px;
+
+            color: #aaa5ba;
+
+            font-size: 10px;
+            font-weight: 900;
+
+            letter-spacing: 1px;
+
+            text-shadow:
+                0 2px 8px
+                rgba(0,0,0,0.70);
+
+        }
+
+
+        .section-divider::before,
+        .section-divider::after {
+
+            content: "";
+
+            height: 1px;
+
+            flex: 1;
+
+            background:
+                rgba(255,255,255,0.16);
+
+            box-shadow:
+                0 1px 5px
+                rgba(0,0,0,0.50);
+
+        }
+
+
+        /* ==========================================
+           FANTASY CARDS
+        ========================================== */
+
+        .fantasy-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr;
+
+            gap: 12px;
+
+        }
+
+
+        .fantasy-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            min-height: 320px;
+
+            padding: 17px 17px 15px;
+
+            border-radius: 20px;
+
+            border:
+                1px solid
+                rgba(255,255,255,0.16);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(18,13,30,0.84),
+                    rgba(12,8,23,0.78)
+                );
+
+            box-shadow:
+                0 18px 55px
+                rgba(0,0,0,0.55),
+                0 0 0 1px
+                rgba(255,255,255,0.025);
+
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
+
+            display: flex;
+            flex-direction: column;
+
+        }
+
+
+        .fantasy-card:hover {
+
+            transform: translateY(-3px);
+
+            border-color:
+                rgba(0,217,87,0.40);
+
+            box-shadow:
+                0 25px 65px
+                rgba(0,0,0,0.60);
+
+        }
+
+
+        .card-video {
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            opacity: 0.22;
+
+            pointer-events: none;
+
+            z-index: 0;
+
+        }
+
+
+        .fantasy-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 210px;
+            height: 210px;
+
+            border-radius: 50%;
+
+            top: -115px;
+            right: -85px;
+
+            background:
+                rgba(0,217,87,0.08);
+
+            pointer-events: none;
+
+            z-index: 1;
+
+        }
+
+
+        .fantasy-card.world::before {
+
+            background:
+                rgba(92,72,210,0.13);
+
+        }
+
+
+        .card-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            flex: 1;
+
+            display: flex;
+            flex-direction: column;
+
+        }
+
+
+        /* ==========================================
+           CARD HEADER
+        ========================================== */
+
+        .card-header {
+
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .card-icon {
+
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background:
+                rgba(0,217,87,0.10);
+
+            border:
+                1px solid
+                rgba(0,217,87,0.18);
+
+            font-size: 24px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,217,87,0.08);
+
+        }
+
+
+        .world .card-icon {
+
+            background:
+                rgba(105,86,220,0.12);
+
+            border-color:
+                rgba(105,86,220,0.22);
+
+            box-shadow:
+                0 10px 30px
+                rgba(105,86,220,0.08);
+
+        }
+
+
+        .card-tag {
+
+            padding:
+                5px
+                9px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(255,255,255,0.07);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.11);
+
+            color: #c2bdce;
+
+            font-size: 8px;
+
+            font-weight: 900;
+
+            letter-spacing: 0.7px;
+
+        }
+
+
+        /* ==========================================
+           CARD TEXT
+        ========================================== */
+
+        .fantasy-card h2 {
+
+            margin: 0;
+
+            font-size: 24px;
+
+            line-height: 1.05;
+
+            font-weight: 950;
+
+            letter-spacing: -0.5px;
+
+            text-align: center;
+
+            position: relative;
+
+            top: -5px;
+
+            text-shadow:
+                0 3px 12px
+                rgba(0,0,0,0.75);
+
+        }
+
+
+        .fantasy-card h2 span {
+
+            display: inline;
+
+            margin-right: 4px;
+
+        }
+
+
+        .local-title-red {
+
+            color: #e00000 !important;
+
+        }
+
+
+        .local-title-green {
+
+            color: #00d957 !important;
+
+        }
+
+
+        .local-title-white {
+
+            color: white !important;
+
+        }
+
+
+        .world h2 span {
+
+            color: #a99cff;
+
+        }
+
+
+        .card-description {
+
+            margin:
+                9px
+                0
+                11px;
+
+            color: #aaa5ba;
+
+            font-size: 11px;
+
+            line-height: 1.65;
+
+        }
+
+
+        /* ==========================================
+           MATCH EXAMPLES
+        ========================================== */
+
+        .match-box {
+
+            display: flex;
+            align-items: center;
+
+            gap: 5px;
+
+            margin-bottom: 11px;
+
+            overflow: hidden;
+
+        }
+
+
+        .match-chip {
+
+            flex: 1;
+
+            min-width: 0;
+
+            padding:
+                7px
+                6px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(0,0,0,0.18);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.06);
+
+            text-align: center;
+
+            color: #d4d0dc;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+
+        .match-vs {
+
+            color: #656074;
+
+            font-size: 8px;
+
+            font-weight: 900;
+
+        }
+
+
+        .world .match-chip {
+
+            background:
+                rgba(105,86,220,0.07);
+
+        }
+
+
+        /* ==========================================
+           STEPS
+        ========================================== */
+
+        .steps {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap: 6px;
+
+            margin-bottom: 11px;
+
+        }
+
+
+        .step {
+
+            padding:
+                7px
+                5px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,0.035);
+
+            border:
+                1px solid
+                rgba(255,255,255,0.055);
+
+            text-align: center;
+
+        }
+
+
+        .step-number {
+
+            display: block;
+
+            margin-bottom: 2px;
+
+            color: #00d957;
+
+            font-size: 8px;
+
+            font-weight: 950;
+
+        }
+
+
+        .world .step-number {
+
+            color: #a99cff;
+
+        }
+
+
+        .step-text {
+
+            display: block;
+
+            color: #888394;
+
+            font-size: 8px;
+
+            line-height: 1.3;
+
+        }
+
+
+        /* ==========================================
+           CTA
+        ========================================== */
+
+        .play-btn {
+
+            width: 100%;
+
+            height: 43px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            gap: 8px;
+
+            margin-top: auto;
+
+            border: 0;
+
+            border-radius: 12px;
+
+            background:
+                #00b341;
+
+            color: white;
+
+            font-size: 12px;
+
+            font-weight: 950;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 9px 25px
+                rgba(0,179,65,0.22);
+
+            transition: 0.2s ease;
+
+        }
+
+
+        .play-btn:hover {
+
+            background:
+                #00c94b;
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        .world .play-btn {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6956dc,
+                    #806ceb
+                );
+
+            box-shadow:
+                0 9px 25px
+                rgba(105,86,220,0.22);
+
+        }
+
+
+        .world .play-btn:hover {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7563e8,
+                    #8b78f2
+                );
+
+        }
+
+
+        .play-arrow {
+
+            font-size: 14px;
+
+            transition:
+                transform 0.2s ease;
+
+        }
+
+
+        .play-btn:hover .play-arrow {
+
+            transform:
+                translateX(3px);
+
+        }
+
+
+        /* ==========================================
+           FOOTER
+        ========================================== */
+
+        .footer {
+
+            margin-top: 18px;
+
+            text-align: center;
+
+            color: #777083;
+
+            font-size: 8px;
+
+            line-height: 1.5;
+
+            text-shadow:
+                0 2px 8px
+                rgba(0,0,0,0.75);
+
+        }
+
+
+        .footer strong {
+
+            color: #aaa3b8;
+
+            display: block;
+
+        }
+
+
+        /* ==========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 380px) {
+
+            .page {
+
+                padding-left: 12px;
+                padding-right: 12px;
+
+            }
+
+            .hero h1 {
+
+                font-size: 29px;
+
+            }
+
+            .fantasy-card {
+
+                padding:
+                    15px
+                    14px
+                    13px;
+
+            }
+
+            .fantasy-card h2 {
+
+                font-size: 22px;
+
+            }
+
+            .card-description {
+
+                font-size: 10px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+    <!-- ==========================================
+         DIVIDER
+    ========================================== -->
+
+    <div class="section-divider">
+
+        CHOOSE YOUR GAME
+
+    </div>
+
+
+
+    <!-- ==========================================
+         FANTASY OPTIONS
+    ========================================== -->
+
+    <div class="fantasy-grid">
+
+
+        <!-- ======================================
+             LOCAL FANTASY
+        ====================================== -->
+
+        <section class="fantasy-card local">
+
+            <video
+                class="card-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="auto"
+            >
+
+                <source
+                    src="https://huggingface.co/datasets/Meekkii/IPLAY/resolve/main/Videos/Fantasy/Local.mp4"
+                    type="video/mp4"
+                >
+
+            </video>
+
+
+            <div class="card-content">
+
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        🇪🇬
+                    </div>
+
+                    <div class="card-tag">
+                        LOCAL
+                    </div>
+
+                </div>
+
+
+                <h2>
+
+                    <span class="local-title-white">
+                        مباريات
+                    </span>
+
+                    <span class="local-title-red">
+                        الأهلي
+                    </span>
+
+                    <span class="local-title-green">
+                        و
+                    </span>
+
+                    <span class="local-title-white">
+                        الزمالك
+                    </span>
+
+                </h2>
+
+
+                <p class="card-description">
+
+                    فانتازي مخصصة لمباريات الأهلي والزمالك فقط.
+                    اختار الـ11 لاعب بتوعك من
+                    <strong>اللاعبين المتاحين</strong>
+                    من الأهلي والزمالك.
+
+                </p>
+
+
+                <button
+                    type="button"
+                    class="play-btn"
+                    onclick="openLocalFantasy()"
+                >
+
+                    العب الأهلي والزمالك
+
+                    <span class="play-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ======================================
+             WORLD FANTASY
+        ====================================== -->
+
+        <section class="fantasy-card world">
+
+            <video
+                class="card-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="auto"
+            >
+
+                <source
+                    src="https://huggingface.co/datasets/Meekkii/IPLAY/resolve/main/Videos/Fantasy/World.mp4"
+                    type="video/mp4"
+                >
+
+            </video>
+
+
+            <div class="card-content">
+
+
+                <div class="card-header">
+
+                    <div class="card-icon">
+                        🌍
+                    </div>
+
+                    <div class="card-tag">
+                        WORLD
+                    </div>
+
+                </div>
+
+
+                <h2>
+
+                    أقوى مباريات
+                    <span>العالم</span>
+
+                </h2>
+
+
+                <p class="card-description">
+
+                    كل أسبوع بنختار مجموعة من أقوى المباريات
+                    حول العالم.
+                    وبناءً على الماتشات المختارة،
+                    بيتحدد الـ
+                    <strong>اللاعبين المتاحين</strong>
+                    اللي تقدر تختار منهم فريقك.
+
+                </p>
+
+
+                <button
+                    type="button"
+                    class="play-btn"
+                    onclick="openWorldFantasy()"
+                >
+
+                    العب World Fantasy
+
+                    <span class="play-arrow">
+                        →
+                    </span>
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+
+
+    <!-- ==========================================
+         FOOTER
+    ========================================== -->
+
+    <div class="footer">
+
+        <strong>iPLAY</strong>
+
+        Play. Compete. Win.
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+    /* ==========================================
+       FANTASY ROUTES
+    ========================================== */
+
+    /*
+     * غيّر المسارات هنا فقط لما تحدد
+     * صفحات الـFantasy النهائية.
+     */
+
+    const LOCAL_FANTASY_PAGE =
+        "build-team.html?mode=local";
+
+    const WORLD_FANTASY_PAGE =
+        "build-team.html?mode=world";
+
+
+
+    /* ==========================================
+       OPEN LOCAL FANTASY
+    ========================================== */
+
+    function openLocalFantasy() {
+
+        window.location.href =
+            LOCAL_FANTASY_PAGE;
+
+    }
+
+
+
+    /* ==========================================
+       OPEN WORLD FANTASY
+    ========================================== */
+
+    function openWorldFantasy() {
+
+        window.location.href =
+            WORLD_FANTASY_PAGE;
+
+    }
+
+
+
+    /* ==========================================
+       BACK
+    ========================================== */
+
+    function goBack() {
+
+        if (window.history.length > 1) {
+
+            window.history.back();
+
+        } else {
+
+            window.location.href =
+                "index.html";
+
+        }
+
+    }
+
+
+</script>
+
+
+</body>
+</html>
