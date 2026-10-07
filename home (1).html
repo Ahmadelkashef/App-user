@@ -1,0 +1,1554 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
+
+<title>iPLAY - Home</title>  
+
+<link rel="icon" href="overall_logo.jpg">  
+<link rel="apple-touch-icon" href="overall_logo.jpg">
+
+<link rel="stylesheet" href="navigation.css">
+  
+<style>  
+*{  
+    margin:0;  
+    padding:0;  
+    box-sizing:border-box;  
+    -webkit-tap-highlight-color:transparent;  
+}  
+  
+html, body{  
+    width:100%;  
+    min-height:100%;  
+    background:#120b29 url("Images/homepage/Hompage.jpg") center center / cover fixed no-repeat;  
+    color:#fff;  
+    font-family:"Segoe UI",Tahoma,Arial,sans-serif;  
+}  
+  
+body{  
+    overflow-x:hidden;  
+}  
+  
+button{  
+    font-family:inherit;  
+}  
+  
+.app{  
+    width:100%;  
+    max-width:520px;  
+    min-height:100vh;  
+    margin:0 auto;  
+    padding:22px 18px 85px;  
+}  
+  
+/* =========================  
+   TOP BAR  
+========================= */  
+  
+.top-bar{  
+    display:flex;  
+    align-items:center;  
+    justify-content:space-between;  
+    margin-bottom:18px;  
+}  
+  
+.welcome-user{  
+    display:flex;  
+    flex-direction:column;  
+    gap:4px;  
+}  
+  
+.welcome-small{  
+    color:rgba(255,255,255,.56);  
+    font-size:13px;  
+}  
+  
+.welcome-name{  
+    font-size:25px;  
+    line-height:1.05;  
+    font-weight:800;  
+    letter-spacing:-.6px;  
+}  
+  
+.top-actions{  
+    display:flex;  
+    align-items:center;  
+    gap:9px;  
+}  
+  
+.icon-btn{  
+    width:40px;  
+    height:40px;  
+    border:1px solid rgba(255,255,255,.10);  
+    border-radius:13px;  
+    background:rgba(255,255,255,.055);  
+    color:#fff;  
+    display:flex;  
+    align-items:center;  
+    justify-content:center;  
+    cursor:pointer;  
+    transition:.25s ease;  
+    position:relative;  
+}  
+  
+.icon-btn:active{  
+    transform:scale(.94);  
+}  
+  
+.icon-btn svg{  
+    width:19px;  
+    height:19px;  
+}  
+
+.notification-badge{  
+    position:absolute;  
+    top:5px;  
+    right:5px;  
+    width:7px;  
+    height:7px;  
+    border-radius:50%;  
+    background:#ff3b3b;  
+    box-shadow:0 0 0 2px #120b29;  
+    display:none;  
+}  
+
+.notification-badge.show{  
+    display:block;  
+}  
+  
+/* =========================  
+   HERO  
+========================= */  
+  
+.hero{  
+    position:relative;  
+    min-height:350px;  
+    border-radius:27px;  
+    overflow:hidden;  
+    background:#17102f;  
+    border:1px solid rgba(255,255,255,.09);  
+    box-shadow:  
+        0 25px 60px rgba(0,0,0,.34),  
+        inset 0 1px 0 rgba(255,255,255,.06);  
+    margin-bottom:28px;  
+}  
+  
+/* VIDEO BACKGROUND */  
+  
+.hero-video{  
+    position:absolute;  
+    inset:0;  
+    width:100%;  
+    height:100%;  
+    object-fit:cover;  
+    z-index:0;  
+    filter:brightness(1);  
+}  
+  
+.hero-bg-overlay{  
+    position:absolute;  
+    inset:0;  
+    z-index:1;  
+    background:  
+        linear-gradient(  
+            180deg,  
+            rgba(18,11,41,.10) 0%,  
+            rgba(18,11,41,.18) 25%,  
+            rgba(18,11,41,.78) 67%,  
+            rgba(18,11,41,.98) 100%  
+        );  
+}  
+  
+.hero-glow{  
+    position:absolute;  
+    width:240px;  
+    height:240px;  
+    border-radius:50%;  
+    background:rgba(0,255,135,.12);  
+    filter:blur(70px);  
+    right:-80px;  
+    top:-70px;  
+    z-index:2;  
+}  
+  
+.hero-content{  
+    position:relative;  
+    z-index:3;  
+    min-height:350px;  
+    padding:23px 22px;  
+    display:flex;  
+    flex-direction:column;  
+    justify-content:flex-end;  
+    padding-bottom:20px;  
+}  
+  
+.live-badge{  
+    position:absolute;  
+    top:21px;  
+    left:21px;  
+    display:flex;  
+    align-items:center;  
+    gap:7px;  
+    padding:7px 11px;  
+    border-radius:20px;  
+    background:rgba(0,0,0,.42);  
+    border:1px solid rgba(255,255,255,.13);  
+    backdrop-filter:blur(10px);  
+    font-size:11px;  
+    font-weight:800;  
+    letter-spacing:.8px;  
+}  
+  
+.live-dot{  
+    width:7px;  
+    height:7px;  
+    border-radius:50%;  
+    background:#00ff87;  
+    box-shadow:0 0 10px rgba(0,255,135,.9);  
+    animation:pulse 1.5s infinite;  
+}  
+  
+@keyframes pulse{  
+    0%,100%{  
+        opacity:1;  
+        transform:scale(1);  
+    }  
+    50%{  
+        opacity:.45;  
+        transform:scale(.72);  
+    }  
+}  
+  
+.hero-tag{  
+    color:#00ff87;  
+    font-size:12px;  
+    font-weight:800;  
+    letter-spacing:1.4px;  
+    margin-bottom:8px;  
+    text-transform:uppercase;  
+}  
+  
+.hero h2{  
+    font-size:31px;  
+    line-height:1.02;  
+    font-weight:900;  
+    letter-spacing:-1px;  
+    max-width:290px;  
+}  
+  
+.hero-subtitle{  
+    margin-top:8px;  
+    color:rgba(255,255,255,.70);  
+    font-size:14px;  
+    line-height:1.4;  
+    max-width:285px;  
+}  
+  
+.hero-info{  
+    display:flex;  
+    align-items:center;  
+    gap:18px;  
+    margin-top:14px;  
+}  
+  
+.hero-stat{  
+    display:flex;  
+    flex-direction:column;  
+    gap:3px;  
+}  
+  
+.hero-stat strong{  
+    font-size:13px;  
+    font-weight:700;  
+}  
+  
+.hero-stat span{  
+    font-size:10px;  
+    color:rgba(255,255,255,.46);  
+}  
+  
+.hero-divider{  
+    width:1px;  
+    height:28px;  
+    background:rgba(255,255,255,.15);  
+}  
+  
+.play-btn{  
+    width:100%;  
+    height:53px;  
+    margin-top:17px;  
+    border:none;  
+    border-radius:17px;  
+    background:#fff;  
+    color:#120b29;  
+    font-size:14px;  
+    font-weight:900;  
+    letter-spacing:.2px;  
+    cursor:pointer;  
+    transition:.25s ease;  
+    display:flex;  
+    align-items:center;  
+    justify-content:center;  
+    gap:9px;  
+    animation:playPulse 2s ease-in-out infinite;  
+}  
+  
+.play-btn svg{  
+    width:17px;  
+    height:17px;  
+}  
+  
+.play-btn:active{  
+    transform:scale(.97);  
+}  
+
+@keyframes playPulse{  
+    0%,100%{  
+        transform:scale(1);  
+    }  
+    50%{  
+        transform:scale(1.015);  
+    }  
+}  
+  
+/* =========================  
+   SECTION HEADER  
+========================= */  
+  
+.section{  
+    margin-bottom:28px;  
+}  
+  
+.section-header{  
+    display:flex;  
+    align-items:center;  
+    justify-content:space-between;  
+    margin-bottom:13px;  
+}  
+  
+.section-title{  
+    font-size:18px;  
+    font-weight:800;  
+    letter-spacing:-.2px;  
+}  
+  
+.section-link{  
+    font-size:11px;  
+    color:rgba(255,255,255,.46);  
+}  
+  
+/* =========================  
+   COMING SOON  
+========================= */  
+  
+.coming-row{  
+    display:grid;  
+    grid-template-columns:repeat(3,1fr);  
+    gap:9px;  
+}  
+  
+.sport-card{  
+    min-height:190px;  
+    border-radius:19px;  
+    border:1px solid rgba(255,255,255,.075);  
+    background:rgba(255,255,255,.045);  
+    padding:0;  
+    display:flex;  
+    flex-direction:column;  
+    justify-content:flex-end;  
+    position:relative;  
+    overflow:hidden;  
+    cursor:pointer;  
+}  
+  
+.sport-video{  
+    position:absolute;  
+    inset:0;  
+    width:100%;  
+    height:100%;  
+    object-fit:cover;  
+    z-index:0;  
+    filter:brightness(.78);  
+}  
+  
+.sport-video-overlay{  
+    position:absolute;  
+    inset:0;  
+    z-index:1;  
+    background:linear-gradient(  
+        180deg,  
+        rgba(18,11,41,.05) 20%,  
+        rgba(18,11,41,.28) 50%,  
+        rgba(18,11,41,.96) 100%  
+    );  
+}  
+  
+.sport-content{  
+    position:relative;  
+    z-index:2;  
+    padding:15px 10px;  
+}  
+  
+.sport-icon{  
+    display:none;  
+}  
+  
+.sport-name{  
+    font-size:12px;  
+    font-weight:750;  
+    line-height:1.2;  
+}  
+  
+.sport-status{  
+    font-size:9px;  
+    color:#ffd900;  
+    margin-top:3px;  
+    animation:soonPulse 1.5s infinite;  
+}  
+  
+@keyframes soonPulse{  
+    0%,100%{  
+        opacity:1;  
+        transform:scale(1);  
+    }  
+    50%{  
+        opacity:.45;  
+        transform:scale(.72);  
+    }  
+}  
+  
+.coming-pill{  
+    position:absolute;  
+    top:10px;  
+    right:9px;  
+    font-size:7px;  
+    font-weight:800;  
+    letter-spacing:.4px;  
+    color:#ffd900;  
+    animation:soonPulse 1.5s infinite;  
+}  
+  
+/* =========================  
+   TOAST  
+========================= */  
+  
+.toast{  
+    position:fixed;  
+    left:50%;  
+    bottom:85px;  
+    transform:translate(-50%,20px);  
+    width:max-content;  
+    max-width:calc(100% - 40px);  
+    padding:11px 15px;  
+    border-radius:13px;  
+    background:rgba(255,255,255,.10);  
+    border:1px solid rgba(255,255,255,.10);  
+    backdrop-filter:blur(15px);  
+    color:#fff;  
+    font-size:11px;  
+    opacity:0;  
+    pointer-events:none;  
+    transition:.3s ease;  
+    z-index:100;  
+}  
+  
+.toast.show{  
+    opacity:1;  
+    transform:translate(-50%,0);  
+}  
+
+/* =========================
+   NOTIFICATION MODAL
+========================= */
+
+.notification-modal{
+    position:fixed;
+    inset:0;
+    z-index:200;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(0,0,0,.62);
+    backdrop-filter:blur(10px);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:.25s ease;
+}
+
+.notification-modal.show{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+}
+
+.notification-card{
+    width:100%;
+    max-width:430px;
+    max-height:calc(100vh - 40px);
+    overflow-y:auto;
+    border-radius:25px;
+    background:#17102f;
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:0 25px 70px rgba(0,0,0,.45);
+    padding:23px 20px 20px;
+    transform:translateY(18px) scale(.97);
+    transition:.25s ease;
+}
+
+.notification-modal.show .notification-card{
+    transform:translateY(0) scale(1);
+}
+
+.notification-header{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:15px;
+    margin-bottom:18px;
+}
+
+.notification-title-wrap{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    flex:1;
+}
+
+.notification-title{
+    font-size:21px;
+    line-height:1.1;
+    font-weight:900;
+    letter-spacing:-.4px;
+}
+
+.notification-subtitle{
+    color:rgba(255,255,255,.52);
+    font-size:12px;
+    line-height:1.4;
+}
+
+.notification-header-actions{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    flex-shrink:0;
+}
+
+.notification-language{
+    height:34px;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:11px;
+    background:rgba(255,255,255,.055);
+    color:rgba(255,255,255,.78);
+    padding:0 9px;
+    font-size:9px;
+    font-weight:800;
+    cursor:pointer;
+    white-space:nowrap;
+}
+
+.notification-language:active{
+    transform:scale(.94);
+}
+
+.notification-close{
+    width:34px;
+    height:34px;
+    flex-shrink:0;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:11px;
+    background:rgba(255,255,255,.055);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    font-size:21px;
+    line-height:1;
+}
+
+.notification-close:active{
+    transform:scale(.94);
+}
+
+.notification-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.notification-item{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:13px;
+    border-radius:17px;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.075);
+}
+
+.notification-icon{
+    width:36px;
+    height:36px;
+    flex-shrink:0;
+    border-radius:12px;
+    background:rgba(0,255,135,.09);
+    color:#00ff87;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+}
+
+.notification-item-content{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    flex:1;
+}
+
+.notification-item-title{
+    font-size:13px;
+    font-weight:800;
+}
+
+.notification-item-text{
+    color:rgba(255,255,255,.56);
+    font-size:10px;
+    line-height:1.45;
+}
+
+.notification-got-it{
+    width:100%;
+    height:48px;
+    margin-top:17px;
+    border:none;
+    border-radius:15px;
+    background:#fff;
+    color:#120b29;
+    font-size:13px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.notification-got-it:active{
+    transform:scale(.97);
+}
+
+/* =========================
+   COMING SOON FULLSCREEN OVERLAY
+========================= */
+
+.comingsoon-overlay{
+    position:fixed;
+    inset:0;
+    z-index:300;
+    background:#000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+}
+
+.comingsoon-overlay.show{
+    display:flex;
+}
+
+.comingsoon-video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* =========================  
+   RESPONSIVE  
+========================= */  
+  
+@media(max-width:360px){  
+  
+    .app{  
+        padding-left:14px;  
+        padding-right:14px;  
+    }  
+  
+    .hero{  
+        min-height:330px;  
+    }  
+  
+    .hero-content{  
+        min-height:330px;  
+        padding:20px 18px;  
+        padding-bottom:17px;  
+    }  
+  
+    .hero h2{  
+        font-size:28px;  
+    }  
+  
+    .coming-row{  
+        gap:7px;  
+    }  
+  
+    .sport-card{  
+        min-height:155px;  
+    }  
+  
+    .sport-name{  
+        font-size:11px;  
+    }  
+}  
+</style>  
+</head>  
+
+<body>  
+
+<div class="app">  
+
+<!-- TOP BAR -->  
+<header class="top-bar">  
+
+    <div class="welcome-user">  
+
+        <div class="welcome-small" id="welcomeMessage">  
+            Welcome  
+        </div>  
+
+        <div class="welcome-name" id="welcomeName">  
+            Player.  
+        </div>  
+
+    </div>  
+
+    <div class="top-actions">  
+
+        <button class="icon-btn" onclick="openNotifications()">  
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">  
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>  
+                <path d="M10 21h4"/>  
+            </svg>  
+            <span class="notification-badge" id="notificationBadge"></span>
+        </button>  
+
+        <button class="icon-btn" onclick="openProfile()">  
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">  
+                <circle cx="12" cy="8" r="3.5"/>  
+                <path d="M5 20c.7-3.5 3.1-5.5 7-5.5s6.3 2 7 5.5"/>  
+            </svg>  
+        </button>  
+
+    </div>  
+
+</header>  
+
+
+<!-- LIVE FANTASY HERO -->  
+<section class="hero">  
+
+    <!-- HERO VIDEO -->  
+    <video  
+        class="hero-video"  
+        autoplay  
+        muted  
+        loop  
+        playsinline  
+        preload="auto"  
+    >  
+        <source  
+            src="Videos/Home/Fantasy_background.mp4"  
+            type="video/mp4"  
+        >  
+    </video>  
+
+    <!-- DARK OVERLAY -->  
+    <div class="hero-bg-overlay"></div>  
+
+    <div class="hero-glow"></div>  
+
+    <div class="live-badge">  
+        <span class="live-dot"></span>  
+        LIVE NOW  
+    </div>  
+
+    <div class="hero-content">  
+
+        <div class="hero-tag">  
+            iPLAY COMPETITION  
+        </div>  
+
+        <h2>  
+            Fantasy Football  
+        </h2>  
+
+        <p class="hero-subtitle" style="visibility:hidden;">  
+            Weekly • Selected Matches  
+        </p>  
+
+        <p class="hero-description">  
+            Build your team. Compete with everyone. Climb the leaderboard.  
+        </p>  
+
+        <div class="hero-info">  
+
+            <div class="hero-stat">  
+                <strong>12,840</strong>  
+                <span>Players</span>  
+            </div>  
+
+            <div class="hero-divider"></div>  
+
+            <div class="hero-stat">  
+                <strong>2d 14h</strong>  
+                <span>Remaining</span>  
+            </div>  
+
+        </div>  
+
+        <button class="play-btn" onclick="playFantasy()">  
+
+            PLAY NOW  
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">  
+                <path d="M5 12h13"/>  
+                <path d="m13 6 6 6-6 6"/>  
+            </svg>  
+
+        </button>  
+
+    </div>  
+
+</section>  
+
+
+<!-- MORE COMING -->  
+<section class="section">  
+
+    <div class="section-header">  
+        <div class="section-title">  
+            More coming to iPLAY  
+        </div>  
+    </div>  
+
+    <div class="coming-row">  
+
+        <div class="sport-card" onclick="openComingSoonOverlay()">  
+
+            <video  
+                class="sport-video"  
+                autoplay  
+                muted  
+                loop  
+                playsinline  
+                preload="auto"  
+            >  
+                <source  
+                    src="https://huggingface.co/datasets/Meekkii/IPLAY/resolve/main/Videos/Home/Football.mp4"  
+                    type="video/mp4"  
+                >  
+            </video>  
+
+            <div class="sport-video-overlay"></div>  
+
+            <div class="sport-content">  
+
+                <div class="sport-name">  
+                    Football Competition  
+                </div>  
+
+                <div class="sport-status">  
+                    Coming Soon  
+                </div>  
+
+            </div>  
+
+        </div>  
+
+
+        <div class="sport-card" onclick="openComingSoonOverlay()">  
+
+            <video  
+                class="sport-video"  
+                autoplay  
+                muted  
+                loop  
+                playsinline  
+                preload="auto"  
+            >  
+                <source  
+                    src="https://huggingface.co/datasets/Meekkii/IPLAY/resolve/main/Videos/Home/Padel.mp4"  
+                    type="video/mp4"  
+                >  
+            </video>  
+
+            <div class="sport-video-overlay"></div>  
+
+            <div class="sport-content">  
+
+                <div class="sport-name">  
+                    Padel Competition  
+                </div>  
+
+                <div class="sport-status">  
+                    Coming Soon  
+                </div>  
+
+            </div>  
+
+        </div>  
+
+
+        <div class="sport-card" onclick="openComingSoonOverlay()">  
+
+            <video  
+                class="sport-video"  
+                autoplay  
+                muted  
+                loop  
+                playsinline  
+                preload="auto"  
+            >  
+                <source  
+                    src="https://huggingface.co/datasets/Meekkii/IPLAY/resolve/main/Videos/Home/Basketball.mp4"  
+                    type="video/mp4"  
+                >  
+            </video>  
+
+            <div class="sport-video-overlay"></div>  
+
+            <div class="sport-content">  
+
+                <div class="sport-name">  
+                    Basketball Competition  
+                </div>  
+
+                <div class="sport-status">  
+                    Coming Soon  
+                </div>  
+
+            </div>  
+
+        </div>  
+
+    </div>  
+
+</section>
+
+</div>  
+
+
+<!-- SHARED NAVIGATION -->  
+<div id="sharedNavigation"></div>
+
+
+<!-- TOAST -->  
+<div class="toast" id="toast"></div>  
+
+
+<!-- NOTIFICATION MODAL -->
+<div class="notification-modal" id="notificationModal">
+
+    <div class="notification-card" id="notificationCard" dir="ltr">
+
+        <div class="notification-header">
+
+            <div class="notification-title-wrap">
+
+                <div class="notification-title" id="notificationTitle">
+                    Welcome to iPLAY 👋
+                </div>
+
+                <div class="notification-subtitle" id="notificationSubtitle">
+                    Here’s what you can do on iPLAY.
+                </div>
+
+            </div>
+
+            <div class="notification-header-actions">
+
+                <button class="notification-language" id="notificationLanguageButton" onclick="toggleNotificationLanguage()">
+                    العربية
+                </button>
+
+                <button class="notification-close" onclick="closeNotifications()">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="notification-list">
+
+            <div class="notification-item">
+
+                <div class="notification-icon">
+                    🎮
+                </div>
+
+                <div class="notification-item-content">
+
+                    <div class="notification-item-title" id="notificationItemTitle1">
+                        Start Playing
+                    </div>
+
+                    <div class="notification-item-text" id="notificationItemText1">
+                        Fantasy Competition is available now. Tap Play Now, build your team and start competing.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="notification-item">
+
+                <div class="notification-icon">
+                    👤
+                </div>
+
+                <div class="notification-item-content">
+
+                    <div class="notification-item-title" id="notificationItemTitle2">
+                        Build Your Sports Profile
+                    </div>
+
+                    <div class="notification-item-text" id="notificationItemText2">
+                        Complete your sports profile and start building your identity on iPLAY.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="notification-item">
+
+                <div class="notification-icon">
+                    🏆
+                </div>
+
+                <div class="notification-item-content">
+
+                    <div class="notification-item-title" id="notificationItemTitle3">
+                        Compete & Earn
+                    </div>
+
+                    <div class="notification-item-text" id="notificationItemText3">
+                        Follow competitions, challenges and rewards coming to the platform.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="notification-item">
+
+                <div class="notification-icon">
+                    🚀
+                </div>
+
+                <div class="notification-item-content">
+
+                    <div class="notification-item-title" id="notificationItemTitle4">
+                        More Sports Coming
+                    </div>
+
+                    <div class="notification-item-text" id="notificationItemText4">
+                        Football Competition, Padel, Basketball and more sports are coming soon.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button class="notification-got-it" id="notificationGotIt" onclick="closeNotifications()">
+            Got it
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- COMING SOON FULLSCREEN OVERLAY -->
+<div class="comingsoon-overlay" id="comingsoonOverlay">
+
+    <video
+        class="comingsoon-video"
+        id="comingsoonVideo"
+        playsinline
+    >
+        <source
+            src="https://huggingface.co/datasets/Meekkii/IPLAY/resolve/main/Videos/Home/comingsoon.mp4"
+            type="video/mp4"
+        >
+    </video>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="device-telemetry.js"></script>
+
+<script>  
+  
+/* =========================  
+   SUPABASE  
+========================= */  
+  
+const SUPABASE_URL = "https://xjorftvsuztxapdnceao.supabase.co";  
+const SUPABASE_KEY = "sb_publishable_C2R3qaePoEtO8vZ940n5iA_ud5JR1Zj";  
+  
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {  
+    auth: { flowType: 'implicit' }  
+});  
+  
+  
+/* =========================  
+   USER DATA  
+========================= */  
+  
+let currentUser = {  
+    name: "Player"  
+};  
+  
+  
+/* =========================  
+   INITIALIZE  
+========================= */  
+  
+document.addEventListener("DOMContentLoaded", async () => {  
+  
+    const nameElement = document.getElementById("welcomeName");  
+    const welcomeMessage = document.getElementById("welcomeMessage");  
+  
+    try {  
+  
+        const { data: sessionData, error: sessionError } = await _supabase.auth.getSession();  
+  
+        if (sessionError) {  
+            console.error("Session error:", sessionError);  
+        }  
+  
+        if (sessionData && sessionData.session) {  
+  
+            const { data: displayNameData, error: displayNameError } = await _supabase  
+                .rpc("get_my_display_name");  
+  
+            if (displayNameError) {  
+                console.error("Display name lookup error:", displayNameError);  
+            }  
+  
+            if (displayNameData && displayNameData.length > 0) {  
+                const returnedName = displayNameData[0].out_display_name;  
+  
+                if (returnedName && returnedName.trim()) {  
+                    currentUser.name = returnedName.trim().split(/\s+/)[0];  
+                }  
+            }  
+  
+        } else {  
+  
+            window.location.href = "index.html";  
+            return;  
+  
+        }  
+  
+    } catch (err) {  
+  
+        console.error("Unexpected user data error:", err);  
+  
+    }  
+  
+    if(currentUser.name){  
+  
+        nameElement.textContent = currentUser.name + ".";  
+  
+    }  
+  
+    welcomeMessage.textContent = "Welcome";  
+
+    if (!localStorage.getItem("iplay_welcome_notification_seen")) {
+
+        setTimeout(() => {
+
+            openNotifications();
+
+            localStorage.setItem("iplay_welcome_notification_seen", "true");
+
+            notificationAutoCloseTimer = setTimeout(() => {
+
+                closeNotifications();
+
+            }, 5000);
+
+        }, 700);
+
+    }
+  
+});  
+  
+  
+/* =========================  
+   PLAY FANTASY  
+========================= */  
+  
+function playFantasy(){  
+
+    showToast("Opening Fantasy Football...");  
+
+    (async () => {  
+
+        try {  
+
+            const { data: sessionData, error: sessionError } =  
+                await _supabase.auth.getSession();  
+
+            if (sessionError) {  
+
+                console.error("Fantasy session error:", sessionError);  
+
+                showToast("Unable to start Fantasy.");  
+
+                return;  
+
+            }  
+
+            if (!sessionData || !sessionData.session) {  
+
+                window.location.href = "index.html";  
+
+                return;  
+
+            }  
+
+
+            const { data: intentData, error: intentError } =  
+                await _supabase.rpc("create_fantasy_start_intent");  
+
+            if (intentError) {  
+
+                console.error("Fantasy start intent error:", intentError);  
+
+                showToast("Unable to start Fantasy.");  
+
+                return;  
+
+            }  
+
+
+            if (  
+                !intentData ||  
+                intentData.length === 0 ||  
+                !intentData[0].out_intent_id  
+            ) {  
+
+                console.error("Fantasy start intent missing.");  
+
+                showToast("Unable to start Fantasy.");  
+
+                return;  
+
+            }  
+
+
+            const intentId = intentData[0].out_intent_id;  
+
+
+            const deviceTelemetry = await getDeviceTelemetry();  
+
+
+            const { data: startData, error: startError } =  
+                await _supabase.rpc("start_fantasy", {  
+
+                    p_intent_id: intentId,  
+                    p_client_device_id: deviceTelemetry.clientDeviceId,  
+                    p_platform: deviceTelemetry.platform,  
+                    p_app_version: deviceTelemetry.appVersion,  
+                    p_os_name: deviceTelemetry.osName,  
+                    p_os_version: deviceTelemetry.osVersion,  
+                    p_manufacturer: deviceTelemetry.manufacturer,  
+                    p_model: deviceTelemetry.model  
+
+                });  
+
+
+            if (startError) {  
+
+                console.error("Start Fantasy error:", startError);  
+
+                showToast("Unable to start Fantasy.");  
+
+                return;  
+
+            }  
+
+
+            console.log("Fantasy competition started:", startData);  
+
+            showToast("Opening Fantasy Football...");  
+
+            setTimeout(() => {  
+
+                window.location.href = "Fantasy_select.html";  
+
+            }, 500);  
+
+
+        } catch (err) {  
+
+            console.error("Fantasy start unexpected error:", err);  
+
+            showToast("Unable to start Fantasy.");  
+
+        }  
+
+    })();  
+
+}  
+  
+  
+/* =========================  
+   PROFILE  
+========================= */  
+  
+function openProfile(){  
+  
+    window.location.href = "user_profile.html";  
+  
+}  
+
+
+/* =========================
+   NOTIFICATIONS
+========================= */
+
+let notificationLanguage = "en";
+let notificationAutoCloseTimer = null;
+
+const notificationTranslations = {
+
+    ar: {
+        dir: "rtl",
+        title: "أهلاً بك في iPLAY 👋",
+        subtitle: "إليك ما يمكنك فعله على iPLAY.",
+        items: [
+            {
+                title: "ابدأ اللعب",
+                text: "مسابقة الفانتازي متاحة الآن. اضغط على Play Now، كوّن فريقك وابدأ المنافسة."
+            },
+            {
+                title: "أنشئ ملفك الرياضي",
+                text: "أكمل ملفك الرياضي وابدأ في بناء هويتك الرياضية على iPLAY."
+            },
+            {
+                title: "نافس واربح",
+                text: "تابع المسابقات والتحديات والجوائز القادمة إلى المنصة."
+            },
+            {
+                title: "رياضات أخرى قادمة",
+                text: "مسابقات كرة القدم، البادل، كرة السلة والمزيد من الرياضات قادمة قريبًا."
+            }
+        ],
+        button: "حسنًا",
+        languageButton: "English"
+    },
+
+    en: {
+        dir: "ltr",
+        title: "Welcome to iPLAY 👋",
+        subtitle: "Here’s what you can do on iPLAY.",
+        items: [
+            {
+                title: "Start Playing",
+                text: "Fantasy Competition is available now. Tap Play Now, build your team and start competing."
+            },
+            {
+                title: "Build Your Sports Profile",
+                text: "Complete your sports profile and start building your identity on iPLAY."
+            },
+            {
+                title: "Compete & Earn",
+                text: "Follow competitions, challenges and rewards coming to the platform."
+            },
+            {
+                title: "More Sports Coming",
+                text: "Football Competition, Padel, Basketball and more sports are coming soon."
+            }
+        ],
+        button: "Got it",
+        languageButton: "العربية"
+    }
+
+};
+
+
+function setNotificationLanguage(language){
+
+    notificationLanguage = language;
+
+    const translation = notificationTranslations[language];
+
+    const card = document.getElementById("notificationCard");
+
+    card.dir = translation.dir;
+
+    document.getElementById("notificationTitle").textContent = translation.title;
+
+    document.getElementById("notificationSubtitle").textContent = translation.subtitle;
+
+    document.getElementById("notificationItemTitle1").textContent = translation.items[0].title;
+    document.getElementById("notificationItemText1").textContent = translation.items[0].text;
+
+    document.getElementById("notificationItemTitle2").textContent = translation.items[1].title;
+    document.getElementById("notificationItemText2").textContent = translation.items[1].text;
+
+    document.getElementById("notificationItemTitle3").textContent = translation.items[2].title;
+    document.getElementById("notificationItemText3").textContent = translation.items[2].text;
+
+    document.getElementById("notificationItemTitle4").textContent = translation.items[3].title;
+    document.getElementById("notificationItemText4").textContent = translation.items[3].text;
+
+    document.getElementById("notificationGotIt").textContent = translation.button;
+
+    document.getElementById("notificationLanguageButton").textContent = translation.languageButton;
+
+}
+
+
+function toggleNotificationLanguage(){
+
+    if(notificationLanguage === "ar"){
+
+        setNotificationLanguage("en");
+
+    }else{
+
+        setNotificationLanguage("ar");
+
+    }
+
+}
+
+
+function openNotifications(){
+
+    if(notificationAutoCloseTimer){
+
+        clearTimeout(notificationAutoCloseTimer);
+
+        notificationAutoCloseTimer = null;
+
+    }
+
+    setNotificationLanguage("en");
+
+    const modal = document.getElementById("notificationModal");
+
+    modal.classList.add("show");
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+function closeNotifications(){
+
+    if(notificationAutoCloseTimer){
+
+        clearTimeout(notificationAutoCloseTimer);
+
+        notificationAutoCloseTimer = null;
+
+    }
+
+    const modal = document.getElementById("notificationModal");
+
+    modal.classList.remove("show");
+
+    document.body.style.overflow = "";
+
+    document.getElementById("notificationBadge").classList.add("show");
+
+}
+
+
+/* =========================
+   COMING SOON OVERLAY
+========================= */
+
+function openComingSoonOverlay(){
+
+    const overlay = document.getElementById("comingsoonOverlay");
+    const video = document.getElementById("comingsoonVideo");
+
+    video.muted = false;
+    video.currentTime = 0;
+
+    overlay.classList.add("show");
+
+    document.body.style.overflow = "hidden";
+
+    video.play().catch(e => console.log("Coming soon video play error:", e));
+
+    video.onended = () => {
+
+        closeComingSoonOverlay();
+
+    };
+
+}
+
+
+function closeComingSoonOverlay(){
+
+    const overlay = document.getElementById("comingsoonOverlay");
+    const video = document.getElementById("comingsoonVideo");
+
+    video.pause();
+    video.currentTime = 0;
+
+    overlay.classList.remove("show");
+
+    document.body.style.overflow = "";
+
+}
+
+
+/* =========================  
+   TOAST  
+========================= */  
+  
+let toastTimer;  
+  
+function showToast(message){  
+  
+    const toast = document.getElementById("toast");  
+  
+    toast.textContent = message;  
+  
+    toast.classList.add("show");  
+  
+    clearTimeout(toastTimer);  
+  
+    toastTimer = setTimeout(() => {  
+  
+        toast.classList.remove("show");  
+  
+    }, 1800);  
+  
+}  
+  
+</script>
+
+<script src="navigation.js"></script>
+
+</body>  
+</html>
