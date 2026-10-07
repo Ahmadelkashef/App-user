@@ -1,6 +1,6 @@
 {
-  "name": "iPLAY",
-  "short_name": "iPLAY",
+  "name": "iPLAY Cloudflare",
+  "short_name": "iPLAY CF",
   "start_url": ".",
   "display": "standalone",
   "scope": "/",
