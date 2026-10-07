@@ -1,0 +1,222 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
+
+<title>iPLAY - Home</title>  
+
+<link rel="icon" href="overall_logo.jpg">  
+<link rel="apple-touch-icon" href="overall_logo.jpg">  
+
+<style>  
+*{  
+    margin:0;  
+    padding:0;  
+    box-sizing:border-box;  
+    -webkit-tap-highlight-color:transparent;  
+}  
+  
+html, body{  
+    width:100%;  
+    min-height:100%;  
+    /* الصورة الأصلية كخلفية احتياطية (Backup) */  
+    background:#120b29 url("Images/homepage/Hompage.jpg") center center / cover fixed no-repeat;  
+    color:#fff;  
+    font-family:"Segoe UI",Tahoma,Arial,sans-serif;  
+    overflow-x:hidden;  
+}  
+
+/* =========================  
+   BACKGROUND VIDEO  
+========================= */  
+.bg-video {  
+    position: fixed;  
+    top: 0;  
+    left: 0;  
+    width: 100%;  
+    height: 100%;  
+    object-fit: cover;  
+    z-index: 0;  
+    pointer-events: none;  
+}  
+  
+.app{  
+    width:100%;  
+    max-width:520px;  
+    min-height:100vh;  
+    margin:0 auto;  
+    padding:22px 18px;  
+    position: relative;  
+    z-index: 1;  
+}  
+  
+/* =========================  
+   TOP BAR (Welcome & Name)  
+========================= */  
+  
+.top-bar{  
+    display:flex;  
+    align-items:center;  
+    justify-content:space-between;  
+    margin-bottom:18px;  
+}  
+  
+.welcome-user{  
+    display:flex;  
+    flex-direction:column;  
+    gap:4px;  
+}  
+  
+.welcome-small{  
+    color:rgba(255,255,255,.56);  
+    font-size:13px;  
+}  
+  
+.welcome-name{  
+    font-size:25px;  
+    line-height:1.05;  
+    font-weight:800;  
+    letter-spacing:-.6px;  
+}  
+</style>  
+</head>  
+
+<body>  
+
+<!-- BACKGROUND VIDEO (مع تشغيل الصوت) -->
+<video  
+    class="bg-video"  
+    id="bgVideo"
+    autoplay  
+    playsinline  
+    preload="auto"  
+>  
+    <source  
+        src="https://huggingface.co/datasets/Meekkii/IPLAY/resolve/main/Videos/Home/%20welcome_intro.mp4"  
+        type="video/mp4"  
+    >  
+</video>  
+
+<div class="app">  
+
+<!-- TOP BAR -->  
+<header class="top-bar">  
+
+    <div class="welcome-user">  
+
+        <div class="welcome-small" id="welcomeMessage">  
+            Welcome  
+        </div>  
+
+        <div class="welcome-name" id="welcomeName">  
+            Player.  
+        </div>  
+
+    </div>  
+
+</header>  
+
+</div>  
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>  
+  
+/* =========================  
+   VIDEO REDIRECT CONTROL (عند الثانية 11)  
+========================= */  
+const bgVideo = document.getElementById("bgVideo");
+
+bgVideo.addEventListener("timeupdate", () => {  
+    // إذا وصل الفيديو إلى الثانية 11، ينتقل لصفحة home.html مباشرة  
+    if (bgVideo.currentTime >= 11.0) {  
+        // نوقف الحدث أو الفيديو حتى لا يتكرر التحويل أكثر من مرة أثناء التوجيه  
+        bgVideo.pause();  
+        window.location.href = "home.html";  
+    }  
+});  
+
+
+/* =========================  
+   SUPABASE  
+========================= */  
+  
+const SUPABASE_URL = "https://xjorftvsuztxapdnceao.supabase.co";  
+const SUPABASE_KEY = "sb_publishable_C2R3qaePoEtO8vZ940n5iA_ud5JR1Zj";  
+  
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {  
+    auth: { flowType: 'implicit' }  
+});  
+  
+  
+/* =========================  
+   USER DATA  
+========================= */  
+  
+let currentUser = {  
+    name: "Player"  
+};  
+  
+  
+/* =========================  
+   INITIALIZE  
+========================= */  
+  
+document.addEventListener("DOMContentLoaded", async () => {  
+  
+    const nameElement = document.getElementById("welcomeName");  
+    const welcomeMessage = document.getElementById("welcomeMessage");  
+  
+    try {  
+  
+        const { data: sessionData, error: sessionError } = await _supabase.auth.getSession();  
+  
+        if (sessionError) {  
+            console.error("Session error:", sessionError);  
+        }  
+  
+        if (sessionData && sessionData.session) {  
+  
+            const { data: displayNameData, error: displayNameError } = await _supabase  
+                .rpc("get_my_display_name");  
+  
+            if (displayNameError) {  
+                console.error("Display name lookup error:", displayNameError);  
+            }  
+  
+            if (displayNameData && displayNameData.length > 0) {  
+                const returnedName = displayNameData[0].out_display_name;  
+  
+                if (returnedName && returnedName.trim()) {  
+                    currentUser.name = returnedName.trim().split(/\s+/)[0];  
+                }  
+            }  
+  
+        } else {  
+  
+            window.location.href = "index.html";  
+            return;  
+  
+        }  
+  
+    } catch (err) {  
+  
+        console.error("Unexpected user data error:", err);  
+  
+    }  
+  
+    if(currentUser.name){  
+  
+        nameElement.textContent = currentUser.name + ".";  
+  
+    }  
+  
+    welcomeMessage.textContent = "Welcome";  
+  
+});  
+
+</script>  
+
+</body>  
+</html>
