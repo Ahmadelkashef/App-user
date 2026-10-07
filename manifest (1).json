@@ -1,0 +1,33 @@
+{
+  "name": "iPLAY",
+  "short_name": "iPLAY",
+  "start_url": ".",
+  "display": "standalone",
+  "scope": "/",
+  "background_color": "#090412",
+  "theme_color": "#090412",
+  "icons": [
+    {
+      "src": "Mobile_icon.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "Mobile_icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "Mobile_icon.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    },
+    {
+      "src": "Mobile_icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ]
+}
