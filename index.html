@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iPLAY - منصة الأرينا</title>
+    <title>Jenun - منصة الأرينا</title>
     <link rel="icon" type="image/jpeg" href="assets/index-assets/overall_logo.jpg">
     <link rel="apple-touch-icon" href="assets/index-assets/overall_logo.jpg">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -354,7 +354,7 @@
 
     <div id="app-splash-screen">
         <div class="splash-welcome-small">WELCOME TO</div>
-        <div class="splash-brand-text">iPLAY</div>
+        <div class="splash-brand-text">Jenun</div>
     </div>
 
     <div class="brand-logo-container">
@@ -369,7 +369,7 @@
     </div>
     
     <div class="login-section-container">
-        <h1 id="title">iPLAY</h1>
+        <h1 id="title">Jenun</h1>
         <p id="subtitle">Your entertainment arena awaits, sign in now</p>
 
         <div class="buttons-row">
@@ -399,7 +399,7 @@
         </div>
 
         <button id="install-btn" onclick="handleInstall()">
-            ⬇️ Install iPLAY
+            ⬇️ Install Jenun
         </button>
 
         <div class="adiclub-footer-brand">
@@ -413,7 +413,7 @@
 
     <div id="ios-install-modal">
         <div class="ios-modal-box">
-            <h3>📲 Install iPLAY</h3>
+            <h3>📲 Install Jenun</h3>
             <p class="ios-sub">Follow these steps to add the app to your home screen</p>
 
             <div class="ios-step">
@@ -453,7 +453,7 @@
     </div>
 
     <script>
-        const playlist = ["assets/index-assets/Background.mp4", "assets/index-assets/Background_1.mp4", "assets/index-assets/Background_2.mp4"];
+        const playlist = ["assets/index-assets/background.mp4", "assets/index-assets/background_1.mp4", "assets/index-assets/background_2.mp4"];
         let currentIndex = 0;
         
         const videoA = document.getElementById("videoA");
@@ -563,20 +563,20 @@
 
         const translations = {
             en: {
-                title: "iPLAY",
+                title: "Jenun",
                 subtitle: "Your entertainment arena awaits, sign in now",
-                modalAboutTitle: "About iPLAY",
-                modalAboutText: "iPLAY is your ultimate comprehensive entertainment and gaming platform designed for excitement and rewards.",
+                modalAboutTitle: "About Jenun",
+                modalAboutText: "Jenun is your ultimate comprehensive entertainment and gaming platform designed for excitement and rewards.",
                 modalWinTitle: "How to Win",
                 modalWinText: "Participate in our weekly tournaments, fantasy leagues, and skill games to climb the leaderboard and win prizes!",
                 modalFreeTitle: "100% Free",
                 modalFreeText: "Enjoy all tournaments and entertainment features completely free of charge with no hidden fees."
             },
             ar: {
-                title: "iPLAY",
+                title: "Jenun",
                 subtitle: "ساحتك الترفيهية بانتظارك، انضم الآن",
                 modalAboutTitle: "من نحن",
-                modalAboutText: "iPLAY هي منصتك الترفيهية والتنافسية الشاملة والمصممة خصيصاً لتمنحك أفضل تجربة ألعاب وجوائز.",
+                modalAboutText: "Jenun هي منصتك الترفيهية والتنافسية الشاملة والمصممة خصيصاً لتمنحك أفضل تجربة ألعاب وجوائز.",
                 modalWinTitle: "إزاي تكسب",
                 modalWinText: "شارك في البطولات الأسبوعية، الفانتزي، وألعاب المهارة عشان تتصدر الليدربورد وتكسب جوايز حقيقية!",
                 modalFreeTitle: "100% فري",
@@ -681,12 +681,12 @@
                 navigator.serviceWorker.register('./service-worker.js')
                     .then(() => {
                         console.log(
-                            'iPLAY Service Worker registered successfully.'
+                            'Jenun Service Worker registered successfully.'
                         );
                     })
                     .catch((error) => {
                         console.error(
-                            'iPLAY Service Worker registration failed:',
+                            'Jenun Service Worker registration failed:',
                             error
                         );
                     });
