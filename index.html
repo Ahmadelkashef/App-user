@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iPLAY - منصة الأرينا</title>
+    <link rel="icon" type="image/jpeg" href="overall_logo.jpg">
+    <link rel="apple-touch-icon" href="overall_logo.jpg">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="device-telemetry.js"></script>
+    <script src="session-processor.js"></script>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #120b29;
+            color: #ffffff;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        #app-splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #3c7860;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.4s ease-in-out;
+            color: #ffffff;
+        }
+        .splash-welcome-small {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        .splash-brand-text {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-weight: bold;
+            font-size: 65px;
+            letter-spacing: -1px;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .lang-switch {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3px;
+            z-index: 10;
+        }
+        .lang-switch button {
+            padding: 5px 12px;
+            background: transparent;
+            color: #aaa;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+        .lang-switch button.active {
+            background: #00ff87;
+            color: #120b29;
+        }
+
+        .login-section-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 130px;
+            width: 100%;
+            max-width: 350px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-logo-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(18, 11, 41, 0.85);
+            border: none;
+            border-radius: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            box-shadow: none;
+            overflow: hidden;
+            padding: 0;
+            box-sizing: border-box;
+            z-index: 1;
+        }
+        .brand-logo-container video,
+        .brand-logo-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.6);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .brand-logo-container video.active,
+        .brand-logo-container img.active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        h1, p, .buttons-row, .adiclub-footer-brand {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 { 
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-weight: bold;
+            color: #ffffff; 
+            margin-bottom: 8px; 
+            font-size: 42px; 
+            letter-spacing: -1px;
+            text-align: center; 
+            text-shadow: 0 2px 6px rgba(0,0,0,0.9); 
+        }
+
+        p { color: #ddd; margin-bottom: 20px; font-size: 14px; text-align: center; text-shadow: 0 2px 4px rgba(0,0,0,0.9); }
+        
+        .buttons-row {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            width: 100%;
+        }
+
+        button.social-icon-btn {
+            flex: 1;
+            padding: 15px 10px; 
+            font-size: 14px; 
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff; 
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            border-radius: 14px;
+            font-weight: bold; 
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.2s;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        button.social-icon-btn:hover { transform: scale(1.05); background: rgba(255, 255, 255, 0.2); }
+        button.social-icon-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .adiclub-footer-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            width: 100%;
+        }
+        .adiclub-footer-brand svg.adidas-logo {
+            width: 28px;
+            height: 18px;
+            fill: #ffffff;
+        }
+        .adiclub-footer-brand .divider-line {
+            width: 1px;
+            height: 14px;
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .adiclub-footer-brand .adiclub-text {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-weight: 300;
+            font-letter-spacing: 1px;
+            font-size: 15px;
+            color: #ffffff;
+            text-transform: lowercase;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+        .modal-content {
+            background: #1a103c;
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 25px;
+            border-radius: 20px;
+            max-width: 320px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 1001;
+        }
+        .modal-content h3 { color: #00ff87; margin-top: 0; margin-bottom: 10px; }
+        .modal-content p { color: #ddd; font-size: 14px; margin-bottom: 20px; text-shadow: none; }
+        .modal-close {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* ── Install Button (NEW) ── */
+        #install-btn {
+            display: none;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            margin-top: 12px;
+            padding: 13px;
+            background: linear-gradient(135deg, #00ff87 0%, #00c96b 100%);
+            color: #120b29;
+            border: none;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,255,135,0.25);
+            transition: opacity 0.2s, transform 0.2s;
+            letter-spacing: 0.3px;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        #install-btn:active { opacity: 0.88; transform: scale(0.98); }
+
+        /* iOS install modal (NEW) */
+        #ios-install-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 2000;
+            padding: 20px;
+            box-sizing: border-box;
+            backdrop-filter: blur(10px);
+        }
+        #ios-install-modal .ios-modal-box {
+            background: #1a103c;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 360px;
+            text-align: center;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+        }
+        #ios-install-modal h3 {
+            color: #00ff87;
+            font-size: 16px;
+            font-weight: 800;
+            margin: 0 0 6px 0;
+        }
+        #ios-install-modal .ios-sub {
+            color: #aaa;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+        .ios-step {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+        .ios-step-num {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: rgba(0,255,135,0.15);
+            border: 1px solid rgba(0,255,135,0.3);
+            color: #00ff87;
+            font-size: 13px;
+            font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .ios-step-text {
+            font-size: 12px;
+            color: #ddd;
+            line-height: 1.5;
+        }
+        .ios-step-text strong { color: #fff; }
+        .ios-close-btn {
+            margin-top: 16px;
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-splash-screen">
+        <div class="splash-welcome-small">WELCOME TO</div>
+        <div class="splash-brand-text">iPLAY</div>
+    </div>
+
+    <div class="brand-logo-container">
+        <video id="videoA" muted playsinline></video>
+        <video id="videoB" muted playsinline></video>
+        <img id="fallbackImg" src="Background.jpg" alt="Background">
+    </div>
+
+    <div class="lang-switch">
+        <button id="lang-en" onclick="setLang('en')">EN</button>
+        <button id="lang-ar" onclick="setLang('ar')">عربي</button>
+    </div>
+    
+    <div class="login-section-container">
+        <h1 id="title">iPLAY</h1>
+        <p id="subtitle">Your entertainment arena awaits, sign in now</p>
+
+        <div class="buttons-row">
+            <!-- Google -->
+            <button class="social-icon-btn" onclick="loginWithGoogle()" title="Google">
+                <svg viewBox="0 0 24 24">
+                    <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.4l3.7 2.9C6.5 7.3 9 5 12 5z"/>
+                    <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
+                    <path fill="#FBBC05" d="M5.6 14.7c-.2-.7-.4-1.5-.4-2.7s.2-2 .4-2.7L1.9 6.4C.7 8.8 0 10.4 0 12s.7 3.2 1.9 5.6l3.7-2.9z"/>
+                    <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1-.7-2.5-1.2-4.3-1.2-3 0-5.5-2.3-6.4-5.3L1.9 15.6C3.7 19.4 7.5 23 12 23z"/>
+                </svg>
+            </button>
+
+            <!-- Facebook -->
+            <button class="social-icon-btn" onclick="loginWithFacebook()" title="Facebook">
+                <svg viewBox="0 0 24 24" fill="#1877F2">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+            </button>
+
+            <!-- Apple -->
+            <button class="social-icon-btn" onclick="loginWithApple()" title="Apple">
+                <svg viewBox="0 0 24 24" fill="#ffffff">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-.77-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-0.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.83 5.42c.57-.69 0.96-1.65 0.86-2.61-.84.03-1.85.56-2.44 1.25-.53.61-.99 1.59-0.87 2.54.95.07 1.89-.48 2.45-1.18z"/>
+                </svg>
+            </button>
+        </div>
+
+        <button id="install-btn" onclick="handleInstall()">
+            ⬇️ Install iPLAY
+        </button>
+
+        <div class="adiclub-footer-brand">
+            <svg class="adidas-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="m24 19.535-8.697-15.07-4.659 2.687 7.145 12.383Zm-8.287 0L9.969 9.59 5.31 12.277l4.192 7.258ZM4.658 14.723l2.776 4.812H1.223L0 17.41Z"/>
+            </svg>
+            <div class="divider-line"></div>
+            <span class="adiclub-text">adiclub</span>
+        </div>
+    </div>
+
+    <div id="ios-install-modal">
+        <div class="ios-modal-box">
+            <h3>📲 Install iPLAY</h3>
+            <p class="ios-sub">Follow these steps to add the app to your home screen</p>
+
+            <div class="ios-step">
+                <div class="ios-step-num">1</div>
+                <div class="ios-step-text">
+                    Tap the <strong>Share</strong> button at the bottom of your Safari browser
+                    <br><span style="font-size:18px;">⬆️ 🔗</span>
+                </div>
+            </div>
+
+            <div class="ios-step">
+                <div class="ios-step-num">2</div>
+                <div class="ios-step-text">
+                    Scroll down and tap <strong>"Add to Home Screen"</strong>
+                    <br><span style="font-size:18px;">➕ 📱</span>
+                </div>
+            </div>
+
+            <div class="ios-step">
+                <div class="ios-step-num">3</div>
+                <div class="ios-step-text">
+                    Tap <strong>"Add"</strong> in the top right corner to confirm
+                    <br><span style="font-size:18px;">✅</span>
+                </div>
+            </div>
+
+            <button class="ios-close-btn" onclick="closeIOSModal()">Got it!</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="infoModal">
+        <div class="modal-content">
+            <h3 id="modal-title">Title</h3>
+            <p id="modal-text">Text goes here...</p>
+            <button class="modal-close" onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        const playlist = ["background.mp4", "background_1.mp4", "background_2.mp4"];
+        let currentIndex = 0;
+        
+        const videoA = document.getElementById("videoA");
+        const videoB = document.getElementById("videoB");
+        const fallbackImg = document.getElementById("fallbackImg");
+        
+        let activeVideo = videoA;
+        let inactiveVideo = videoB;
+        let splashHidden = false;
+        let videoHasStarted = false;
+
+        function hideAppSplash() {
+            if (splashHidden) return;
+            splashHidden = true;
+            const splashScreen = document.getElementById('app-splash-screen');
+            if (splashScreen) {
+                splashScreen.style.opacity = '0';
+                setTimeout(() => { splashScreen.style.display = 'none'; }, 400);
+            }
+        }
+
+        function initSeamlessLoop() {
+            activeVideo.src = playlist[currentIndex];
+            activeVideo.classList.add("active");
+            activeVideo.onplaying = () => { 
+                videoHasStarted = true;
+                fallbackImg.classList.remove("active");
+                hideAppSplash(); 
+            };
+            activeVideo.oncanplay = () => { 
+                videoHasStarted = true;
+                fallbackImg.classList.remove("active");
+                hideAppSplash(); 
+            };
+            activeVideo.play().catch(e => { console.log("Autoplay error:", e); hideAppSplash(); });
+            currentIndex = (currentIndex + 1) % playlist.length;
+            inactiveVideo.src = playlist[currentIndex];
+            inactiveVideo.load();
+        }
+
+        function handleVideoEnded() {
+            let temp = activeVideo;
+            activeVideo = inactiveVideo;
+            inactiveVideo = temp;
+            activeVideo.classList.add("active");
+            inactiveVideo.classList.remove("active");
+            activeVideo.play().catch(e => console.log("Play error:", e));
+            currentIndex = (currentIndex + 1) % playlist.length;
+            inactiveVideo.src = playlist[currentIndex];
+            inactiveVideo.load();
+        }
+
+        videoA.addEventListener("ended", handleVideoEnded);
+        videoB.addEventListener("ended", handleVideoEnded);
+        initSeamlessLoop();
+        
+        setTimeout(() => { 
+            hideAppSplash(); 
+            if (!videoHasStarted) {
+                fallbackImg.classList.add("active");
+            }
+        }, 3000);
+
+        let deferredPrompt = null;
+        const installBtn = document.getElementById('install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'flex';
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installBtn.style.display = 'none';
+            deferredPrompt = null;
+        });
+
+        function isIOS() {
+            return /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+        }
+
+        function isInStandaloneMode() {
+            return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        }
+
+        if (isIOS() && !isInStandaloneMode()) {
+            installBtn.style.display = 'flex';
+        }
+
+        function handleInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((result) => {
+                    if (result.outcome === 'accepted') {
+                        installBtn.style.display = 'none';
+                    }
+                    deferredPrompt = null;
+                });
+            } else if (isIOS()) {
+                document.getElementById('ios-install-modal').style.display = 'flex';
+            }
+        }
+
+        function closeIOSModal() {
+            document.getElementById('ios-install-modal').style.display = 'none';
+        }
+
+        const translations = {
+            en: {
+                title: "iPLAY",
+                subtitle: "Your entertainment arena awaits, sign in now",
+                modalAboutTitle: "About iPLAY",
+                modalAboutText: "iPLAY is your ultimate comprehensive entertainment and gaming platform designed for excitement and rewards.",
+                modalWinTitle: "How to Win",
+                modalWinText: "Participate in our weekly tournaments, fantasy leagues, and skill games to climb the leaderboard and win prizes!",
+                modalFreeTitle: "100% Free",
+                modalFreeText: "Enjoy all tournaments and entertainment features completely free of charge with no hidden fees."
+            },
+            ar: {
+                title: "iPLAY",
+                subtitle: "ساحتك الترفيهية بانتظارك، انضم الآن",
+                modalAboutTitle: "من نحن",
+                modalAboutText: "iPLAY هي منصتك الترفيهية والتنافسية الشاملة والمصممة خصيصاً لتمنحك أفضل تجربة ألعاب وجوائز.",
+                modalWinTitle: "إزاي تكسب",
+                modalWinText: "شارك في البطولات الأسبوعية، الفانتزي، وألعاب المهارة عشان تتصدر الليدربورد وتكسب جوايز حقيقية!",
+                modalFreeTitle: "100% فري",
+                modalFreeText: "استمتع بكل البطولات والفعاليات الترفيهية مجاناً تماماً وبدون أي رسوم خفية."
+            }
+        };
+
+        let currentLang = 'en';
+
+        (function checkAuthError() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('auth_error') === '1') {
+                const reason = params.get('reason') || 'unknown';
+                console.error('Auth failed, reason:', reason);
+                alert('حصل خطأ أثناء تسجيل الدخول (' + reason + ')، برجاء المحاولة مرة أخرى');
+            }
+        })();
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            document.getElementById('lang-ar').classList.toggle('active', lang === 'ar');
+            document.getElementById('title').innerText = translations[lang].title;
+            document.getElementById('subtitle').innerText = translations[lang].subtitle;
+        }
+
+        setLang('en');
+
+        function openModal(type) {
+            const modal = document.getElementById('infoModal');
+            const titleElem = document.getElementById('modal-title');
+            const textElem = document.getElementById('modal-text');
+            if (type === 'about') {
+                titleElem.innerText = translations[currentLang].modalAboutTitle;
+                textElem.innerText = translations[currentLang].modalAboutText;
+            } else if (type === 'win') {
+                titleElem.innerText = translations[currentLang].modalWinTitle;
+                textElem.innerText = translations[currentLang].modalFreeText;
+            } else if (type === 'free') {
+                titleElem.innerText = translations[currentLang].modalFreeTitle;
+                textElem.innerText = translations[currentLang].modalFreeText;
+            }
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+            auth: { flowType: 'implicit' }
+        });
+
+        async function loginWithGoogle() {
+            const { error } = await _supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: `${window.location.origin}/auth-callback.html?provider=google`
+                }
+            });
+
+            if (error) {
+                console.error("Google OAuth error:", error);
+                alert("حصل خطأ أثناء تسجيل الدخول، برجاء المحاولة مرة أخرى");
+            }
+        }
+
+        async function loginWithFacebook() {
+            const { error } = await _supabase.auth.signInWithOAuth({
+                provider: 'facebook',
+                options: {
+                    redirectTo: `${window.location.origin}/auth-callback.html?provider=facebook`
+                }
+            });
+
+            if (error) {
+                console.error("Facebook OAuth error:", error);
+                alert("حصل خطأ أثناء تسجيل الدخول، برجاء المحاولة مرة أخرى");
+            }
+        }
+
+        async function loginWithApple() {
+            window.location.href = "Email Login.html";
+        }
+
+        if ('serviceWorker' in navigator) {
+            const hadController =
+                !!navigator.serviceWorker.controller;
+
+            navigator.serviceWorker.addEventListener(
+                'controllerchange',
+                () => {
+                    if (!hadController) return;
+
+                    window.location.reload();
+                }
+            );
+
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(() => {
+                        console.log(
+                            'iPLAY Service Worker registered successfully.'
+                        );
+                    })
+                    .catch((error) => {
+                        console.error(
+                            'iPLAY Service Worker registration failed:',
+                            error
+                        );
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
